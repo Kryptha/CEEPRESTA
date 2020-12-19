@@ -1,0 +1,24 @@
+<resources>
+
+    <string-array name="categorias">
+        <item>Limpieza</item>
+        <item>Herramientas</item>
+        <item>Documentos</item>
+        <item>Entretenimiento</item>
+        <item>Comida</item>
+        <item>Tecnología</item>
+        <item>Mobilario</item>
+    </string-array>
+
+    <string-array name="estadosRegister">
+        <item>Disponible </item>
+        <item>No Disponible </item>
+    </string-array>
+
+    <string-array name="estadosEditar">
+        <item>Disponible </item>
+        <item>No Disponible </item>
+        <item>Reservado</item>
+    </string-array>
+
+</resources>

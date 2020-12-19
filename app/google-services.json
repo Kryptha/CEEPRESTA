@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "1068284222673",
+    "firebase_url": "https://cee-prestatest.firebaseio.com",
+    "project_id": "cee-prestatest",
+    "storage_bucket": "cee-prestatest.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1068284222673:android:f548e0f1cd95f9aa7d39f0",
+        "android_client_info": {
+          "package_name": "com.example.ceepresta"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1068284222673-cu386t0kahtdu33rous968a4391svf4c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMx5U0VUEGbxbs3Mx8To3jmIVzu_3D_ig"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1068284222673-cu386t0kahtdu33rous968a4391svf4c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1068284222673:android:d5e4a331327a9b3c7d39f0",
+        "android_client_info": {
+          "package_name": "com.example.ceepresta2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1068284222673-cu386t0kahtdu33rous968a4391svf4c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMx5U0VUEGbxbs3Mx8To3jmIVzu_3D_ig"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1068284222673-cu386t0kahtdu33rous968a4391svf4c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
