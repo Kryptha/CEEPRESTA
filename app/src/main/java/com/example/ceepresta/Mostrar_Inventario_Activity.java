@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -144,8 +145,12 @@ public class Mostrar_Inventario_Activity extends AppCompatActivity implements Ad
     @Override
     public void onItemClick(int position)
     {
-
-        Toast.makeText(this, "Normal click at position: " + position, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getApplicationContext(), DetallesObjeto_Activity.class);
+        intent.putExtra("nombre", lista_de_objetos.get(position).getNombre());
+        intent.putExtra("estado", lista_de_objetos.get(position).getEstado());
+        intent.putExtra("fechaRegistro", lista_de_objetos.get(position).getFechaRegistro());
+        intent.putExtra("Urlimage", lista_de_objetos.get(position).getUrlimage());
+        startActivity(intent);
     }
 
     //En caso de mantener apretado un item de la lista de objetos
