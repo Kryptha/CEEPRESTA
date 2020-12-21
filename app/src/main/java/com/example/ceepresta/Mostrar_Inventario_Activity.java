@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -39,7 +40,13 @@ public class Mostrar_Inventario_Activity extends AppCompatActivity implements Ad
     private ValueEventListener db_listener;
 
     //Lista de objetos
-    private List<Objeto> lista_de_objetos;
+    private ArrayList<Objeto> lista_de_objetos;
+
+    //Palabra para buscar
+    private String palabrafiltrar = "";
+
+    //Obtención del searchview
+    private SearchView searchview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,13 +63,6 @@ public class Mostrar_Inventario_Activity extends AppCompatActivity implements Ad
 
         //Lista con los objetos a mostrar
         lista_de_objetos = new ArrayList<>();
-
-        //Adapatador del Recyclerview, que mostrará la lista de objetos
-        adaptadorObjeto = new AdaptadorObjeto(Mostrar_Inventario_Activity.this, lista_de_objetos);
-        recyclerView.setAdapter(adaptadorObjeto);
-
-        //Si selecciona algun item de la lista
-        adaptadorObjeto.setOnItemClickListener(Mostrar_Inventario_Activity.this);
 
         //Referencias de la base de datos y el storage
         ref_db = FirebaseDatabase.getInstance().getReference().child("Inventarios").child("LCC");
@@ -86,8 +86,13 @@ public class Mostrar_Inventario_Activity extends AppCompatActivity implements Ad
                     lista_de_objetos.add(objeto);
                 }
 
-                //Le aviso al adaptador del cambio
-                adaptadorObjeto.notifyDataSetChanged();
+                //Adapatador del Recyclerview, que mostrará la lista de objetos
+                adaptadorObjeto = new AdaptadorObjeto(lista_de_objetos);
+                recyclerView.setAdapter(adaptadorObjeto);
+
+                /* Funciones de la barra de búsqueda*/
+                initSearchWidgets();
+
                 //Como ya se cargo, circulo de progreso invisible
                 circulo_progreso.setVisibility(View.INVISIBLE);
 
@@ -102,7 +107,38 @@ public class Mostrar_Inventario_Activity extends AppCompatActivity implements Ad
             }
         });
 
+
     }
+
+    private void initSearchWidgets()
+    {
+        //Se busca la id de la barra de búsqueda.
+        searchview = (SearchView) findViewById(R.id.id_searchview);
+
+        //Se utiliza Listener para recibir lo que se escribe en la barra de búsqueda.
+        searchview.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            //Este método se llama cada vez que el usuario ingresa texto en la barra.
+            @Override
+            /*Se filtra la lista en tiempo en real, por lo tanto, solo es necesario el
+             * método onQueryTextChange*/
+            public boolean onQueryTextChange(String s)
+            {
+                /*Se pasa el string 's' que representa lo que el usuario
+                 * escribe en la barra de búsqueda*/
+                palabrafiltrar = s;
+                adaptadorObjeto.getFilter().filter(s);
+                return false;
+            }
+        });
+    }
+
+
+
 
     //Función que muestra algo al momento de clickear un objeto
     @Override
