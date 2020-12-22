@@ -143,8 +143,8 @@ public class Firebase {
                 "Devuelto",
                 "24/12/2020",
                 "a6vubdbsNCYXUeJAhBG0EpAFVCF3",
-                "a6vubdbsNCYXUeJAhBG0EpAFVCF3",
-                "201287022");
+                "201287022",
+                "a6vubdbsNCYXUeJAhBG0EpAFVCF3");
         Prestatario prestatario = new Prestatario(
                 "Oscar",
                 "Fritis",
