@@ -23,8 +23,12 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 
+import Clases.Categoria;
 import Clases.Objeto;
+import Clases.Prestamo;
+import Clases.Prestatario;
 import Clases.Usuario;
 
 public class Firebase {
@@ -116,6 +120,100 @@ public class Firebase {
             dataBaseRef = FirebaseDatabase.getInstance().getReference().child("Inventarios").child(inventarioID);
             String UploadId = dataBaseRef.push().getKey();
             dataBaseRef.child(UploadId).setValue(objeto);
+            return true;
+        }
+        catch (Exception e){
+            return false;
+        }
+    }
+
+    /*Método de testing para la base de datos*/
+
+    public static void testBD(){
+        Usuario usuario = new Usuario(
+                "Centro",
+                "Estudiantes",
+                "cee@lcc.cl",
+                "NB",
+                "admin",
+                "LCC");
+        Prestamo prestamo = new Prestamo(
+                "-MOrorXdqmdDHCD-9pYI",
+                "19/12/2020 13:56",
+                "Devuelto",
+                "24/12/2020",
+                "a6vubdbsNCYXUeJAhBG0EpAFVCF3",
+                "a6vubdbsNCYXUeJAhBG0EpAFVCF3",
+                "201287022");
+        Prestatario prestatario = new Prestatario(
+                "Oscar",
+                "Fritis",
+                "oscar.fritis@usach.cl",
+                "+5693634337",
+                "LCC",
+                "201287022");
+        Categoria categoria = new Categoria("Limpieza");
+
+        //addPrestamo("LCC", prestamo);
+        //addPrestatario("LCC", prestatario, prestatario.getRun());
+        //addUsuario(usuario);
+        //addCategoria("LCC", categoria);
+
+    }
+
+    /*Método que registra un préstamo a la base de datos, al inventario de la carrera respectiva*/
+
+    public static boolean addPrestamo (String inventarioID, Prestamo prestamo){
+        DatabaseReference dataBaseRef;
+        try {
+            dataBaseRef = FirebaseDatabase.getInstance().getReference().child("Prestamos").child(inventarioID);
+            String UploadId = dataBaseRef.push().getKey();
+            dataBaseRef.child(UploadId).setValue(prestamo);
+            return true;
+        }
+        catch (Exception e){
+            return false;
+        }
+    }
+
+    /*Método que registra un prestatario a la base de datos, al inventario de la carrera respectiva*/
+
+    public static boolean addPrestatario (String inventarioID, Prestatario prestatario, String run){
+        DatabaseReference dataBaseRef;
+        try {
+            dataBaseRef = FirebaseDatabase.getInstance().getReference().child("Prestatarios").child(inventarioID);
+            String UploadId = run;
+            dataBaseRef.child(UploadId).setValue(prestatario);
+            return true;
+        }
+        catch (Exception e){
+            return false;
+        }
+    }
+
+    /*Método que registra un usuario a la base de datos*/
+
+    public static boolean addUsuario (Usuario usuario){
+        DatabaseReference dataBaseRef;
+        try {
+            dataBaseRef = FirebaseDatabase.getInstance().getReference().child("Usuarios");
+            String UploadId =dataBaseRef.push().getKey();
+            dataBaseRef.child(UploadId).setValue(usuario);
+            return true;
+        }
+        catch (Exception e){
+            return false;
+        }
+    }
+
+    /*Método que registra una categoria a la base de datos de inventario correspondiente*/
+
+    public static boolean addCategoria (String inventarioID, Categoria categoria){
+        DatabaseReference dataBaseRef;
+        try {
+            dataBaseRef = FirebaseDatabase.getInstance().getReference().child("Categorias").child(inventarioID);
+            String UploadId = dataBaseRef.push().getKey();
+            dataBaseRef.child(UploadId).setValue(categoria);
             return true;
         }
         catch (Exception e){

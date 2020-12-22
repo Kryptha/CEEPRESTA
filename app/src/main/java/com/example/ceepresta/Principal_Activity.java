@@ -19,6 +19,8 @@ import com.google.firebase.database.ValueEventListener;
 import Clases.Objeto;
 import Clases.Usuario;
 
+import static BaseDeDatos.Firebase.testBD;
+
 public class Principal_Activity extends AppCompatActivity {
 
     /*Cardviews clickeables del menu */
@@ -48,6 +50,8 @@ public class Principal_Activity extends AppCompatActivity {
         cvInventario.setOnClickListener(buttonclick);
         cvRegistrarObjeto.setOnClickListener(buttonclick);
 
+        //TESTING
+        //testBD();
 
     }
 
