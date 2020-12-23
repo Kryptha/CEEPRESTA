@@ -116,6 +116,13 @@ public class AñadirObjeto_Activity extends AppCompatActivity implements Adapter
             }
         });
 
+        btnVerinventario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openMostrarInventarioActivity();
+            }
+        });
+
         //Adapatador para utilizar el spinner de categoria (Aún no se usa de la BD Categoria esta predeterminado en values -> string.xml -> categorias
         ArrayAdapter<CharSequence> adapterSpinnerCategory = ArrayAdapter. createFromResource(this, R.array.categorias, android.R.layout.simple_spinner_item);
         adapterSpinnerCategory.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -134,14 +141,16 @@ public class AñadirObjeto_Activity extends AppCompatActivity implements Adapter
 
     //Función que valida el nombre y cantidad del objeto. Muestra un mensaje en caso de que no haya ingresado nada
     private boolean validarEntrada(){
+        boolean flag = true;
         if(nameObjeto.getText().toString().equals("")){
             nameObjeto.setError("Este campo es obligatorio");
-            if (cantidadObjeto.getText().toString().equals("")){
-                cantidadObjeto.setError("Este campo es obligatorio");
-            }
-            return  false;
+            flag = false;
         }
-        return  true;
+        if (cantidadObjeto.getText().toString().equals("")){
+            cantidadObjeto.setError("Este campo es obligatorio");
+            flag = false;
+        }
+        return  flag;
     }
 
     //Abre la intención de galeria para optar por una imagen
@@ -252,5 +261,12 @@ public class AñadirObjeto_Activity extends AppCompatActivity implements Adapter
     public void onNothingSelected(AdapterView<?> adapterView) {
         //En casa de que no selecciona nada, por cualquier motivo sea
         Toast.makeText(getApplicationContext(), "Debe seleccionar una opción", Toast.LENGTH_LONG).show();
+    }
+
+    //Función de abrir la actibidad de "Mostrar inventarior"
+    public void openMostrarInventarioActivity()
+    {
+        Intent intent = new Intent(this, Mostrar_Inventario_Activity.class);
+        startActivity(intent);
     }
 }

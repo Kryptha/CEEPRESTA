@@ -1,6 +1,7 @@
 package com.example.ceepresta;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.Image;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -84,7 +85,7 @@ public class AdaptadorObjeto extends RecyclerView.Adapter<AdaptadorObjeto.ImageV
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {
             List<Objeto> lista_filtrada = new ArrayList<>();
-            
+
             /*Si el string 'charSequence llega nulo o es de largo 0,
             entonces se muestra la lista completa'*/
             if(charSequence == null || charSequence.length() == 0)
@@ -129,7 +130,7 @@ public class AdaptadorObjeto extends RecyclerView.Adapter<AdaptadorObjeto.ImageV
     };
 
 
-    public class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
+    public class ImageViewHolder extends RecyclerView.ViewHolder implements
             View.OnCreateContextMenuListener, MenuItem.OnMenuItemClickListener {
 
         public ImageView imageView;
@@ -139,6 +140,20 @@ public class AdaptadorObjeto extends RecyclerView.Adapter<AdaptadorObjeto.ImageV
         {
             super(itemView);
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    Intent intent = new Intent(view.getContext(), DetallesObjeto_Activity.class);
+                    intent.putExtra("nombre", lista_de_objetos.get(position).getNombre());
+                    intent.putExtra("estado", lista_de_objetos.get(position).getEstado());
+                    intent.putExtra("fechaRegistro", lista_de_objetos.get(position).getFechaRegistro());
+                    intent.putExtra("Urlimage", lista_de_objetos.get(position).getUrlimage());
+                    view.getContext().startActivity(intent);
+
+                }
+            });
+
             imageView = itemView.findViewById(R.id.id_imagen_tarjeta);
             textViewName = itemView.findViewById(R.id.id_nombre_objeto);
             textViewCant = itemView.findViewById(R.id.id_cantidad);
@@ -146,24 +161,9 @@ public class AdaptadorObjeto extends RecyclerView.Adapter<AdaptadorObjeto.ImageV
             textViewEstado = itemView.findViewById(R.id.id_estado);
             textViewFecha = itemView.findViewById(R.id.id_fechareg);
 
-            itemView.setOnClickListener(this);
             itemView.setOnCreateContextMenuListener(this);
         }
 
-        @Override
-        public void onClick(View view)
-        {
-            if(mListener != null)
-            {
-                int position = getAdapterPosition();
-
-                if(position != RecyclerView.NO_POSITION)
-                {
-                    mListener.onItemClick(position);
-                }
-            }
-
-        }
 
         @Override
         public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
@@ -202,11 +202,6 @@ public class AdaptadorObjeto extends RecyclerView.Adapter<AdaptadorObjeto.ImageV
         void onItemClick(int position);
         void onWhatEverClick(int position);
         void onDeleteClick(int position);
-    }
-
-    public void setOnItemClickListener(OnItemClickListener listener)
-    {
-        mListener = listener;
     }
 
     /*Función que reinicia la lista que hay que filtrar y debe mostrar en pantalla*/

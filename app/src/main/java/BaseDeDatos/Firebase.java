@@ -25,6 +25,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import Clases.Objeto;
+import Clases.Prestatario;
 import Clases.Usuario;
 
 public class Firebase {
@@ -116,6 +117,20 @@ public class Firebase {
             dataBaseRef = FirebaseDatabase.getInstance().getReference().child("Inventarios").child(inventarioID);
             String UploadId = dataBaseRef.push().getKey();
             dataBaseRef.child(UploadId).setValue(objeto);
+            return true;
+        }
+        catch (Exception e){
+            return false;
+        }
+    }
+
+    /*Función que agrega un prestatario a la BD con la llave inventarioID el cual tendrá como llave el RUN */
+
+    public static boolean addDatePrestatario (String inventarioID, Prestatario prestatario, String run){
+        DatabaseReference dataBaseRef;
+        try {
+            dataBaseRef = FirebaseDatabase.getInstance().getReference().child("Prestatarios").child(inventarioID);
+            dataBaseRef.child(run).setValue(prestatario);
             return true;
         }
         catch (Exception e){

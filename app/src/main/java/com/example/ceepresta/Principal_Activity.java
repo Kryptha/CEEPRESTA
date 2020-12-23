@@ -59,6 +59,7 @@ public class Principal_Activity extends AppCompatActivity {
                 openMostrarInventarioActivity();
 
             } else if (cvBuscar.equals(view)) {
+                openMostrarPrestatariosActivity();
 
             }
             else if (cvRegistrarObjeto.equals(view)) {
@@ -70,6 +71,13 @@ public class Principal_Activity extends AppCompatActivity {
     //Función de abrir la actividad de "añadir objetos"
     public void openAgregarObjetoActivity(){
         Intent i = new Intent(this, AñadirObjeto_Activity.class);
+        startActivity(i);
+    }
+
+    //Función de abrir la actividad "mostrar prestatarios"
+    public void openMostrarPrestatariosActivity()
+    {
+        Intent i = new Intent(this, MostrarPrestatarios_Activity.class);
         startActivity(i);
     }
 

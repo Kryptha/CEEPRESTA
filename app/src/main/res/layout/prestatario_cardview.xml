@@ -14,7 +14,7 @@
     android:backgroundTint="@color/white">
 
     <LinearLayout
-        android:id="@+id/id_tarjeta"
+        android:id="@+id/id_tarjeta_prestatario"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -28,11 +28,11 @@
             android:layout_weight="2">
 
             <ImageView
-                android:id="@+id/id_imagen_tarjeta"
+                android:id="@+id/id_foto_prestatario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@mipmap/ic_launcher_cee"
+                android:src="@mipmap/ic_launcher_user"
                 android:layout_margin="10dp"/>
         </LinearLayout>
 
@@ -45,43 +45,43 @@
             android:paddingLeft="8dp">
 
             <TextView
-                android:id="@+id/id_nombre_objeto"
+                android:id="@+id/id_nombre_prestatario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Paleta de ping-pong"
+                android:text="Giorno Giovanna"
                 android:textAllCaps="true"
                 android:textColor="@color/black"
                 android:gravity="left"/>
 
             <TextView
-                android:id="@+id/id_cantidad"
+                android:id="@+id/rut_prestatario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Cantidad: 1"
+                android:text="12.345.678-9"
                 android:textColor="@color/black"
                 android:gravity="left"/>
 
             <TextView
-                android:id="@+id/id_categoria"
+                android:id="@+id/id_carrera_prestatario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Categoría: Tecnología"
+                android:text="Jefe de Passione"
                 android:textColor="@color/black"
-                android:gravity="left"/>
+                android:gravity="left" />
 
             <TextView
-                android:id="@+id/id_estado"
+                android:id="@+id/id_telefono_prestatario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Estado: No disponible"
+                android:text="+56 9 1234 5678"
                 android:textColor="@color/black"
-                android:gravity="left"/>
+                android:gravity="left" />
 
             <TextView
-                android:id="@+id/id_fechareg"
+                android:id="@+id/id_correo_prestatario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Fecha de registro: 18/12/2020"
+                android:text="Tugiovanni@gmail.com"
                 android:textColor="@color/black"
                 android:gravity="left"/>
         </LinearLayout>
