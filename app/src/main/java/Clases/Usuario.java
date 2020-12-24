@@ -8,6 +8,10 @@ public class Usuario {
     private String rol;
     private String inventarioid;
 
+    public Usuario(){
+        //Constructor vacío es necesario.
+    }
+
     public Usuario(String nombre, String apellido, String correo, String genero, String rol, String inventarioid) {
         this.nombre = nombre;
         this.apellido = apellido;

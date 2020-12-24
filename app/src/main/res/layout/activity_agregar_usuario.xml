@@ -166,7 +166,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
                 android:backgroundTint="#F44336"
-                android:text="Volver a la lista"
+                android:text="Ver lista de usuarios"
                 android:textColor="#FFFFFF"
                 android:textSize="12sp"
                 android:textStyle="bold" />

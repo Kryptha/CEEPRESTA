@@ -113,7 +113,7 @@ public class AñadirUsuario_Activity extends AppCompatActivity implements Adapte
         btn_volver_usuario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Ver historia de Usuarios
+                openMostrarUsuarioActivity();
             }
         });
 
@@ -192,5 +192,11 @@ public class AñadirUsuario_Activity extends AppCompatActivity implements Adapte
         Toast.makeText(getApplicationContext(), "Debe seleccionar una opción", Toast.LENGTH_LONG).show();
     }
 
+    //Función de abrir la actividad "Lista de usuarios"
+    public void openMostrarUsuarioActivity()
+    {
+        Intent i = new Intent(this, ListaDeUsuarios_Activity.class);
+        startActivity(i);
+    }
 
 }

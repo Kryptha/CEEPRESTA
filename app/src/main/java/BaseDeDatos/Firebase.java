@@ -76,9 +76,9 @@ public class Firebase {
      */
     public static ArrayList<String> signInAccount(String email, String password) throws Exception {
 
-        String registrado = "false";
         ArrayList<String> result = new ArrayList<>();
-        result.add(registrado);
+        result.add("false");
+
         String StringURL = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key="+FIREBASE_KEY;
         String postJsonData = "{\"email\":\""+email+"\",\"password\":\""+password+"\"}";
 
@@ -94,19 +94,19 @@ public class Firebase {
 
             String idUser = jsonObj.getString("localId");
 
-            registrado = jsonObj.getString("registered");
+            String registrado = jsonObj.getString("registered");
+
+            //Actualizamos y agregamos la UID.
+            result.set(0,registrado);
+            result.add(idUser);
 
             String token = jsonObj.getString("idToken");
 
-            /*La posición 0 es que si esta o no registrado, la posición 1 es el UID del usuario*/
-            result.set(0, registrado);
-            result.add(idUser);
 
             Log.i("ID_USER","IdUsuario: "+idUser);
             Log.i("ID_USER","Registrado: "+registrado);
             Log.i("ID_USER","Token: "+token);
-            //JSONObject jsonObjbody = new JSONObject(body);
-            //productID = jsonObjbody.getString("productID");
+
         }
 
         return result;
