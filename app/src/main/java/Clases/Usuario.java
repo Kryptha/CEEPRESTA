@@ -1,6 +1,7 @@
 package Clases;
 
 public class Usuario {
+    private String uid;
     private String nombre, apellido;
     private String correo;
     private String genero;
@@ -14,6 +15,14 @@ public class Usuario {
         this.genero = genero;
         this.rol = rol;
         this.inventarioid = inventarioid;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getNombre() {

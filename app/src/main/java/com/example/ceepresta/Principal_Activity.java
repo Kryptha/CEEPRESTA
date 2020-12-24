@@ -22,7 +22,7 @@ import Clases.Usuario;
 public class Principal_Activity extends AppCompatActivity {
 
     /*Cardviews clickeables del menu */
-    private CardView cvBuscar, cvInventario, cvPrestamos, cvRegistrarObjeto, cvRegistrarUsuario, cvConfiguraciones;
+    private CardView cvPrestatarios, cvInventario, cvPrestamos, cvRegistrarObjeto, cvRegistrarUsuario, cvConfiguraciones;
     // Obtengo la UID desde el inicio sesión
     private String UID;
 
@@ -33,7 +33,7 @@ public class Principal_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_principal);
 
         // Obtención de lo visual
-        cvBuscar = findViewById(R.id.cardview_search);
+        cvPrestatarios = findViewById(R.id.cardview_search);
         cvInventario = findViewById(R.id.cardview_inventario);
         cvPrestamos = findViewById(R.id.cardview_prestamo);
         cvRegistrarObjeto = findViewById(R.id.cardview_registerobjeto);
@@ -44,9 +44,10 @@ public class Principal_Activity extends AppCompatActivity {
         UID = getIntent().getStringExtra("UID");
 
         //Declaración de click de los cardview
-        cvBuscar.setOnClickListener(buttonclick);
+        cvPrestatarios.setOnClickListener(buttonclick);
         cvInventario.setOnClickListener(buttonclick);
         cvRegistrarObjeto.setOnClickListener(buttonclick);
+        cvRegistrarUsuario.setOnClickListener(buttonclick);
 
 
     }
@@ -58,12 +59,15 @@ public class Principal_Activity extends AppCompatActivity {
             if (cvInventario.equals(view)) {
                 openMostrarInventarioActivity();
 
-            } else if (cvBuscar.equals(view)) {
+            } else if (cvPrestatarios.equals(view)) {
                 openMostrarPrestatariosActivity();
 
             }
             else if (cvRegistrarObjeto.equals(view)) {
                 openAgregarObjetoActivity();
+            }
+            else if (cvRegistrarUsuario.equals(view)){
+                openAñadirUsuarioActivity();
             }
         }
     };
@@ -86,6 +90,13 @@ public class Principal_Activity extends AppCompatActivity {
     public void openMostrarInventarioActivity()
     {
         Intent intent = new Intent(this, Mostrar_Inventario_Activity.class);
+        startActivity(intent);
+    }
+
+    //Función de abrir la actibidad de "Mostrar inventarior"
+    public void openAñadirUsuarioActivity()
+    {
+        Intent intent = new Intent(this, AñadirUsuario_Activity.class);
         startActivity(intent);
     }
 

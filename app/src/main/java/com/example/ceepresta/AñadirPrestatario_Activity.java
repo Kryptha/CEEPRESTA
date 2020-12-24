@@ -17,7 +17,7 @@ import Clases.Prestatario;
 import static BaseDeDatos.Firebase.addDateInventario;
 import static BaseDeDatos.Firebase.addDatePrestatario;
 
-public class AñadirPrestatario_activity extends AppCompatActivity {
+public class AñadirPrestatario_Activity extends AppCompatActivity {
 
     //Declaración visual
     private EditText nombrePrestatario, apellidoPrestatario, correoPrestatario, runPrestatario, telefonoPrestatario, carreraPrestatario;

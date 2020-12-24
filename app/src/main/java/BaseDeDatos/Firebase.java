@@ -37,9 +37,11 @@ public class Firebase {
      * Metodo para consumir un SERVICIO REST para registrar uns nueva cuenta
      * METHOD POST
      */
-    public static boolean signUpAccount(String email,String password) throws Exception {
+    public static ArrayList<String> signUpAccount(String email,String password) throws Exception {
 
-        boolean registro = false;
+        ArrayList<String> result = new ArrayList<>();
+        //Se inicializa el index 0 como false, en caso de que no cree la cuenta
+        result.add("false");
         // creando String para consumir servicio signUp
         String StringURL = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key="+FIREBASE_KEY;
         // Crenado string del Json que espera el servicio
@@ -54,16 +56,18 @@ public class Firebase {
             String response = responseHttp(con).toString();
             // Creando objeto Json para obtenre el localId de la cuenta
             JSONObject jsonObj = new JSONObject(response);
+            Log.i("ID_USER_RESPONSE",response);
 
+            //Se actuliza el arreglo de que creo bien el usuario
+            result.set(0, "true");
             String idUser = jsonObj.getString("localId");
-
+            //Añado el UID a la lista para retornarla
+            result.add(idUser);
             Log.i("ID_USER",idUser);
-            //JSONObject jsonObjbody = new JSONObject(body);
-            //productID = jsonObjbody.getString("productID");
-            registro = true;
+
         }
 
-        return registro;
+        return result;
     }
 
     /**
@@ -136,6 +140,22 @@ public class Firebase {
         catch (Exception e){
             return false;
         }
+    }
+
+    /*Función añade un usuario a la Base de Datos */
+    public static boolean addDataUser (Usuario usuario, String UID){
+        //Obtención de la UID.
+        DatabaseReference dataBaseRef;
+
+        try {
+            dataBaseRef = FirebaseDatabase.getInstance().getReference().child("Usuarios");
+            dataBaseRef.child(UID).setValue(usuario);
+            return true;
+        }
+        catch (Exception e){
+            return false;
+        }
+
     }
 
 

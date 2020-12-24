@@ -8,12 +8,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,13 +19,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
 
-import Clases.Objeto;
 import Clases.Prestatario;
 
 public class MostrarPrestatarios_Activity extends AppCompatActivity
@@ -157,7 +151,7 @@ public class MostrarPrestatarios_Activity extends AppCompatActivity
     //Función de abrir la actividad "Añadir Prestatario"
     public void openAñadirPrestatarioActivity()
     {
-        Intent i = new Intent(this, AñadirPrestatario_activity.class);
+        Intent i = new Intent(this, AñadirPrestatario_Activity.class);
         startActivity(i);
     }
 }
