@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
@@ -21,12 +22,13 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import Clases.Objeto;
 
-public class Mostrar_Inventario_Activity extends AppCompatActivity implements AdaptadorObjeto.OnItemClickListener{
+public class Mostrar_Inventario_Activity extends AppCompatActivity{
 
     /*Preparación del recycler-adaptador*/
     private RecyclerView recyclerView;
@@ -36,7 +38,8 @@ public class Mostrar_Inventario_Activity extends AppCompatActivity implements Ad
     private ProgressBar circulo_progreso;
 
     //Para obtener una referencia a las imagenes en Firebase Storage
-    private FirebaseStorage ref_almac;
+    private FirebaseStorage fbstorage_ref_almac;
+
     private DatabaseReference ref_db;
     private ValueEventListener db_listener;
 
@@ -67,7 +70,7 @@ public class Mostrar_Inventario_Activity extends AppCompatActivity implements Ad
 
         //Referencias de la base de datos y el storage
         ref_db = FirebaseDatabase.getInstance().getReference().child("Inventarios").child("LCC");
-        ref_almac = FirebaseStorage.getInstance();
+        fbstorage_ref_almac = FirebaseStorage.getInstance();
 
         db_listener = ref_db.addValueEventListener(new ValueEventListener() {
             @Override
@@ -138,50 +141,6 @@ public class Mostrar_Inventario_Activity extends AppCompatActivity implements Ad
         });
     }
 
-
-
-
-    //Función que muestra algo al momento de clickear un objeto
-    @Override
-    public void onItemClick(int position)
-    {
-        Intent intent = new Intent(getApplicationContext(), DetallesObjeto_Activity.class);
-        intent.putExtra("nombre", lista_de_objetos.get(position).getNombre());
-        intent.putExtra("estado", lista_de_objetos.get(position).getEstado());
-        intent.putExtra("fechaRegistro", lista_de_objetos.get(position).getFechaRegistro());
-        intent.putExtra("Urlimage", lista_de_objetos.get(position).getUrlimage());
-        startActivity(intent);
-    }
-
-    //En caso de mantener apretado un item de la lista de objetos
-    @Override
-    public void onWhatEverClick(int position)
-    {
-        Toast.makeText(this, "Whatever click at position: " + position, Toast.LENGTH_SHORT).show();
-    }
-
-    //Remueve el objeto de la base de datos y la imagen del Storage
-    @Override
-    public void onDeleteClick(int position)
-    {
-        Objeto objeto_seleccionado = lista_de_objetos.get(position);
-        String llave_seleccionada = objeto_seleccionado.getKey();
-        StorageReference ref_imagen = ref_almac.getReferenceFromUrl(objeto_seleccionado.getUrlimage());
-
-        /*Solo se quiere borrar la imagen de la base de datos SI el borrado fue exitoso en el
-         * almacenamiento, o sino se pueden tener entradas en el almacenamiento que no tienen
-         * la entrada correspondiente en la base de datos, cuando el borrado en la base de datos
-         * fue exitoso pero no asi en el almacenamiento.*/
-        ref_imagen.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid)
-            {
-                ref_db.child(llave_seleccionada).removeValue();
-                Toast.makeText(Mostrar_Inventario_Activity.this, "Objeto borrado", Toast.LENGTH_SHORT).show();
-
-            }
-        });/*Se puede agregar un OnFailureListener si se desea realizar un feedback cuando el borrado falla*/
-    }
 
     @Override
     protected void onDestroy() {

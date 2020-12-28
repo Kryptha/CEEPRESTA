@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +31,6 @@ public class AdaptadorObjeto extends RecyclerView.Adapter<AdaptadorObjeto.ImageV
 {
     private List<Objeto> lista_de_objetos;
     private  List<Objeto> infoFull;
-    private OnItemClickListener mListener;
 
     public AdaptadorObjeto(List<Objeto> uploads)
     {
@@ -130,8 +130,7 @@ public class AdaptadorObjeto extends RecyclerView.Adapter<AdaptadorObjeto.ImageV
     };
 
 
-    public class ImageViewHolder extends RecyclerView.ViewHolder implements
-            View.OnCreateContextMenuListener, MenuItem.OnMenuItemClickListener {
+    public class ImageViewHolder extends RecyclerView.ViewHolder{
 
         public ImageView imageView;
         public TextView textViewName,  textViewCant, textViewCateg, textViewEstado, textViewFecha;
@@ -140,17 +139,15 @@ public class AdaptadorObjeto extends RecyclerView.Adapter<AdaptadorObjeto.ImageV
         {
             super(itemView);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+            itemView.setOnClickListener(new View.OnClickListener()
+            {
                 @Override
-                public void onClick(View view) {
+                public void onClick(View view)
+                {
                     int position = getAdapterPosition();
                     Intent intent = new Intent(view.getContext(), DetallesObjeto_Activity.class);
-                    intent.putExtra("nombre", lista_de_objetos.get(position).getNombre());
-                    intent.putExtra("estado", lista_de_objetos.get(position).getEstado());
-                    intent.putExtra("fechaRegistro", lista_de_objetos.get(position).getFechaRegistro());
-                    intent.putExtra("Urlimage", lista_de_objetos.get(position).getUrlimage());
+                    intent.putExtra("lista_de_objetos", lista_de_objetos.get(position));
                     view.getContext().startActivity(intent);
-
                 }
             });
 
@@ -160,52 +157,16 @@ public class AdaptadorObjeto extends RecyclerView.Adapter<AdaptadorObjeto.ImageV
             textViewCateg = itemView.findViewById(R.id.id_categoria);
             textViewEstado = itemView.findViewById(R.id.id_estado);
             textViewFecha = itemView.findViewById(R.id.id_fechareg);
-
-            itemView.setOnCreateContextMenuListener(this);
-        }
-
-
-        @Override
-        public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
-            contextMenu.setHeaderTitle("Select Action");
-            MenuItem doWhatever = contextMenu.add(Menu.NONE, 1, 1, "Do whatever");
-            MenuItem delete = contextMenu.add(Menu.NONE, 2, 2, "Delete");
-
-            doWhatever.setOnMenuItemClickListener(this);
-            delete.setOnMenuItemClickListener(this);
-        }
-
-        @Override
-        public boolean onMenuItemClick(MenuItem menuItem) {
-            if(mListener != null)
-            {
-                int position = getAdapterPosition();
-
-                if(position != RecyclerView.NO_POSITION)
-                {
-                    switch (menuItem.getItemId())
-                    {
-                        case 1:
-                            mListener.onWhatEverClick(position);
-                            return true;
-                        case 2:
-                            mListener.onDeleteClick(position);
-                            return true;
-                    }
-                }
-            }
-            return false;
         }
     }
 
     public interface OnItemClickListener {
         void onItemClick(int position);
-        void onWhatEverClick(int position);
-        void onDeleteClick(int position);
     }
 
     /*Función que reinicia la lista que hay que filtrar y debe mostrar en pantalla*/
-    public void updateData (ArrayList<Objeto> Update){
+    public void updateData(ArrayList<Objeto> Update)
+    {
         lista_de_objetos.clear();
         lista_de_objetos.addAll(Update);
         infoFull.clear();
