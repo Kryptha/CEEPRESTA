@@ -13,6 +13,7 @@ import android.widget.Toast;
 import java.util.regex.Pattern;
 
 import Clases.Prestatario;
+import Clases.Usuario;
 
 import static BaseDeDatos.Firebase.addDateInventario;
 import static BaseDeDatos.Firebase.addDatePrestatario;
@@ -22,12 +23,13 @@ public class AñadirPrestatario_Activity extends AppCompatActivity {
     //Declaración visual
     private EditText nombrePrestatario, apellidoPrestatario, correoPrestatario, runPrestatario, telefonoPrestatario, carreraPrestatario;
     private Button btn_save, btn_volver;
-    //Saber en que carrera pertenece los datos
-    private String inventarioID = "LCC";
 
     public static final Pattern
             RUN_PATTERN = Pattern.compile("[0-9+]{8,10}"),
             RUN_PATTERN_K = Pattern.compile("[0-9+]{7,9}" + "[kK]");
+
+    //UID del usuario que inicio sesión
+    private Usuario currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,7 @@ public class AñadirPrestatario_Activity extends AppCompatActivity {
         btn_save = findViewById(R.id.btn_save_añadirPrestario);
         btn_volver = findViewById(R.id.btn_verPrestarios);
 
+        currentUser = (Usuario) getIntent().getSerializableExtra("User");
 
         //En caso de añadir el botón para salvar la información del prestatario
         btn_save.setOnClickListener(new View.OnClickListener() {
@@ -57,7 +60,7 @@ public class AñadirPrestatario_Activity extends AppCompatActivity {
                     Prestatario prestatario = new Prestatario(nombrePrestatario.getText().toString(), apellidoPrestatario.getText().toString(),
                             carreraPrestatario.getText().toString(), telefonoPrestatario.getText().toString(), correoPrestatario.getText().toString());
                     //Añade el prestatario a la base de datos en "Prestatario - > InventarioID" con la clave de su RUN.
-                    if(addDatePrestatario(inventarioID, prestatario, runPrestatario.getText().toString())){
+                    if(addDatePrestatario(currentUser.getInventarioid(), prestatario, runPrestatario.getText().toString())){
                         Toast.makeText(getApplicationContext(), "Prestatario añadido", Toast.LENGTH_SHORT).show();
                         clearText();
                     }

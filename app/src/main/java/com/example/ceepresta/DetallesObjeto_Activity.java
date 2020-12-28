@@ -72,7 +72,7 @@ public class DetallesObjeto_Activity extends AppCompatActivity
         currentUser = (Usuario) getIntent().getSerializableExtra("User");
 
         //Referencias de la base de datos y el storage
-        ref_db = FirebaseDatabase.getInstance().getReference().child("Inventarios").child("LCC").child(objeto_recibido.getKey());
+        ref_db = FirebaseDatabase.getInstance().getReference().child("Inventarios").child(currentUser.getInventarioid()).child(objeto_recibido.getKey());
         fbstorage_ref_almac = FirebaseStorage.getInstance();
 
         //Obtención del objeto desde la base de datos

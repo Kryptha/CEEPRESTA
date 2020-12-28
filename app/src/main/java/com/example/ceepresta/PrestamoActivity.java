@@ -60,7 +60,7 @@ public class PrestamoActivity extends AppCompatActivity {
     private String prestatarioID;
     //Obtención del objeto
     private Objeto objeto;
-    //Declaración del usuario prestamista
+
     private Usuario currentUser;
 
     @Override
@@ -89,7 +89,7 @@ public class PrestamoActivity extends AppCompatActivity {
 
         //Acá buscar en la base de datos y añadir a la lista.
         //Referencias de la base de datos y el storage
-        ref_db = FirebaseDatabase.getInstance().getReference().child("Prestatarios").child("LCC");
+        ref_db = FirebaseDatabase.getInstance().getReference().child("Prestatarios").child(currentUser.getInventarioid());
 
         db_listener = ref_db.addValueEventListener(new ValueEventListener() {
             @Override
@@ -228,14 +228,14 @@ public class PrestamoActivity extends AppCompatActivity {
             //En este caso aún no se ha devuelto el objeto por ende no se puede colocar fecha de devolución, ni el receptor
             Prestamo prestamo = new Prestamo(currentUser.getUid(), prestatarioID, objeto.getKey(), fecha_prestamo, fecha_plazo_entrega, "", "");
             //Se añade el prestamo a la base de datos
-            addDataPrestamo(prestamo, "LCC");
+            addDataPrestamo(prestamo, currentUser.getInventarioid());
             //Se actualiza el objeto
             objeto.setEstado("Reservado");
             objeto.setLastFechaPrestamo(fecha_prestamo);
             objeto.setLastPrestatario(text_prestatario.getText().toString());
             objeto.setLastPrestamista(currentUser.getNombre() + " " + currentUser.getApellido());
             //Se actualiza la base de datos
-            SetDataInventario("LCC", objeto, objeto.getKey());
+            SetDataInventario(currentUser.getInventarioid(), objeto, objeto.getKey());
             Toast.makeText(getApplicationContext(), "Prestamo realizado", Toast.LENGTH_SHORT).show();
             finish();
         }
