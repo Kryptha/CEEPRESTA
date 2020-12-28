@@ -32,7 +32,6 @@
                 android:id="@+id/txv_msg_bienvenida"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Bienvenido"
                 android:textColor="#FFFFFF"
                 android:textSize="24dp"
                 android:textStyle="bold" />
@@ -42,9 +41,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/txv_msg_bienvenida"
-                android:text="Centro de estudiantes"
                 android:textColor="#FFFFFF"
                 android:textSize="18dp" />
+
+            <ProgressBar
+                android:id="@+id/progress_circle_home"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"/>
+
         </RelativeLayout>
 
         <GridLayout
@@ -219,7 +224,7 @@
                         android:layout_marginTop="12dp"
                         android:textColor="@color/black"
                         android:textSize="18sp"
-                        android:text="Añadir usuario"
+                        android:text="Usuarios"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         />

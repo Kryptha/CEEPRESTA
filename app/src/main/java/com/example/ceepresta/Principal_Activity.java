@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +35,8 @@ public class Principal_Activity extends AppCompatActivity {
     //Autenticación para obtener la UID
     FirebaseAuth mAuth;
     DatabaseReference ref;
+    //Declaración de circulo de progreso
+    private ProgressBar circulo_progreso;
 
 
     @Override
@@ -57,6 +60,8 @@ public class Principal_Activity extends AppCompatActivity {
         cvConfiguraciones = findViewById(R.id.cardview_settings);
         msgBienvenida = findViewById(R.id.txv_msg_bienvenida);
         msgRol = findViewById(R.id.txv_rol_bienvenida);
+        //Circulo de progreso antes de mostrar el mensaje de bienvenida
+        circulo_progreso = findViewById(R.id.progress_circle_home);
 
 
         //Obtención del usuario para actualizar los mensajes de bienvenida (Se debe colocar acá, ya que trabaja en hilos)
@@ -68,11 +73,13 @@ public class Principal_Activity extends AppCompatActivity {
                     usuario = dataSnapshot.getValue(Usuario.class);
                     setRolText(usuario);
                     setWelcomeText(usuario);
+                    circulo_progreso.setVisibility(View.INVISIBLE);
                 }
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 System.out.println("Fallo la lectura: " + databaseError.getCode());
+                circulo_progreso.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -100,7 +107,7 @@ public class Principal_Activity extends AppCompatActivity {
                 openAgregarObjetoActivity();
             }
             else if (cvRegistrarUsuario.equals(view)){
-                openAñadirUsuarioActivity();
+                openUsuarioActivity();
             }
         }
     };
@@ -128,9 +135,9 @@ public class Principal_Activity extends AppCompatActivity {
     }
 
     //Función de abrir la actibidad de "Mostrar inventarior"
-    public void openAñadirUsuarioActivity()
+    public void openUsuarioActivity()
     {
-        Intent intent = new Intent(this, AñadirUsuario_Activity.class);
+        Intent intent = new Intent(this, ListaDeUsuarios_Activity.class);
         startActivity(intent);
     }
 

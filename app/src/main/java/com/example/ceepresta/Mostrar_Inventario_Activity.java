@@ -154,4 +154,5 @@ public class Mostrar_Inventario_Activity extends AppCompatActivity{
         super.onDestroy();
         ref_db.removeEventListener(db_listener);
     }
+
 }

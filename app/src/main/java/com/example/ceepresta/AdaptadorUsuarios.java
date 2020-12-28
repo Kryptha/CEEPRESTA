@@ -1,15 +1,27 @@
 package com.example.ceepresta;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,11 +45,69 @@ public class AdaptadorUsuarios extends RecyclerView.Adapter<AdaptadorUsuarios.Im
 
         public ImageView imageView;
         public TextView textViewName, textViewCorreo, textViewRol;
+        public ImageButton deleteUser;
 
         public ImageViewHolder(View itemView)
         {
             super(itemView);
+            //Botón para eliminar un usuario
+            deleteUser = itemView.findViewById(R.id.btn_delete_user);
 
+            //En caso de seleccionarr el botón
+            deleteUser.setOnClickListener(new View.OnClickListener() {
+                @SuppressLint("SetTextI18n")
+                @Override
+                public void onClick(View view) {
+                    //Se inicializa el diálogo
+                    TextView txt_dialogo;
+                    //Se obtiene la posición donde se hizo click
+                    int position = getAdapterPosition();
+                    //Se declará el diálogo
+                    Dialog dialog = new Dialog(view.getContext());
+                    //Obtenemos los botones
+                    Button btn_borrar, btn_cancelar;
+                    //Obtenemos la referencia de la base de datos
+                    DatabaseReference ref_db = FirebaseDatabase.getInstance().getReference().child("Usuarios");
+                    //Actualizamos el diálogo
+                    dialog.setContentView(R.layout.dialogo_eliminar_objeto);
+                    txt_dialogo = dialog.findViewById(R.id.dialogo_txt_small);
+                    btn_borrar =  dialog.findViewById(R.id.btn_dialogo_borrar);
+                    btn_cancelar = dialog.findViewById(R.id.btn_dialogo_cancelar);
+                    //Advertimos al usuario de eliminar al usuario
+                    txt_dialogo.setText("¿Realmente quieres borrar " + lista_de_usuarios.get(position).getNombre() +
+                            " "+ lista_de_usuarios.get(position).getApellido() + "? Este proceso no es reversible");
+                    //En caso de borrar
+                    btn_borrar.setOnClickListener(new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View view)
+                        {  //Obtenelo la llave para borrar
+                            String llave_seleccionada = lista_de_usuarios.get(position).getUid();
+
+                            //Removemos el valor de la base de datos
+                            ref_db.child(llave_seleccionada).removeValue();
+                            //Advertimos al usuario
+                            Toast.makeText(view.getContext(), lista_de_usuarios.get(position).getNombre()
+                                    +" "+ lista_de_usuarios.get(position).getApellido() + " ha sido eliminado", Toast.LENGTH_SHORT).show();
+                            //Cerramos el diálogo
+                           dialog.dismiss();
+                        }
+                    });
+                    //En caso de cancelar, simplemente cerramos el diálogo
+                    btn_cancelar.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    //Configuración visual del diálogo
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    dialog.show();
+                }
+            });
+
+            //Configuración visual del cardview
             imageView = itemView.findViewById(R.id.id_foto_usuario);
             textViewName = itemView.findViewById(R.id.id_nombre_usuario);
             textViewCorreo = itemView.findViewById(R.id.correo_usuario);

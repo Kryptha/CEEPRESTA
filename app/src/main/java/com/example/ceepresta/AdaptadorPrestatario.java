@@ -1,7 +1,11 @@
 package com.example.ceepresta;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.media.Image;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -10,14 +14,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -149,10 +158,68 @@ public class AdaptadorPrestatario extends RecyclerView.Adapter<AdaptadorPrestata
 
         public ImageView imageView;
         public TextView textViewName,  textViewRut, textViewCarrera, textViewTel, textViewCorreo;
-
+        public ImageButton deleteUser;
         public ImageViewHolder(View itemView)
         {
             super(itemView);
+
+            //Botón para eliminar un usuario
+            deleteUser = itemView.findViewById(R.id.btn_delete_prestatario);
+
+            //En caso de seleccionarr el botón
+            deleteUser.setOnClickListener(new View.OnClickListener() {
+                @SuppressLint("SetTextI18n")
+                @Override
+                public void onClick(View view) {
+                    //Se inicializa el diálogo
+                    TextView txt_dialogo;
+                    //Se obtiene la posición donde se hizo click
+                    int position = getAdapterPosition();
+                    //Se declará el diálogo
+                    Dialog dialog = new Dialog(view.getContext());
+                    //Obtenemos los botones
+                    Button btn_borrar, btn_cancelar;
+                    //Obtenemos la referencia de la base de datos
+                    DatabaseReference ref_db = FirebaseDatabase.getInstance().getReference().child("Prestatarios").child("LCC");
+                    //Actualizamos el diálogo
+                    dialog.setContentView(R.layout.dialogo_eliminar_objeto);
+                    txt_dialogo = dialog.findViewById(R.id.dialogo_txt_small);
+                    btn_borrar =  dialog.findViewById(R.id.btn_dialogo_borrar);
+                    btn_cancelar = dialog.findViewById(R.id.btn_dialogo_cancelar);
+                    //Advertimos al usuario de eliminar al usuario
+                    txt_dialogo.setText("¿Realmente quieres borrar " + lista_de_prestatarios.get(position).getNombre() +
+                            " "+ lista_de_prestatarios.get(position).getApellido() + "? Este proceso no es reversible");
+                    //En caso de borrar
+                    btn_borrar.setOnClickListener(new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View view)
+                        {  //Obtenelo la llave para borrar
+                            String llave_seleccionada = lista_de_prestatarios.get(position).getRut();
+                            Log.i("RUT", llave_seleccionada);
+
+                            //Removemos el valor de la base de datos
+                            ref_db.child(llave_seleccionada).removeValue();
+                            //Advertimos al usuario
+                            Toast.makeText(view.getContext(), lista_de_prestatarios.get(position).getNombre()
+                                    +" "+ lista_de_prestatarios.get(position).getApellido() + " ha sido eliminado", Toast.LENGTH_SHORT).show();
+                            //Cerramos el diálogo
+                            dialog.dismiss();
+                        }
+                    });
+                    //En caso de cancelar, simplemente cerramos el diálogo
+                    btn_cancelar.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    //Configuración visual del diálogo
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    dialog.show();
+                }
+            });
 
             imageView = itemView.findViewById(R.id.id_foto_prestatario);
             textViewName = itemView.findViewById(R.id.id_nombre_prestatario);
