@@ -40,9 +40,11 @@ public class Firebase {
      * Metodo para consumir un SERVICIO REST para registrar uns nueva cuenta
      * METHOD POST
      */
-    public static boolean signUpAccount(String email,String password) throws Exception {
+    public static ArrayList<String> signUpAccount(String email,String password) throws Exception {
 
-        boolean registro = false;
+        ArrayList<String> result = new ArrayList<>();
+        //Se inicializa el index 0 como false, en caso de que no cree la cuenta
+        result.add("false");
         // creando String para consumir servicio signUp
         String StringURL = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key="+FIREBASE_KEY;
         // Crenado string del Json que espera el servicio
@@ -57,16 +59,18 @@ public class Firebase {
             String response = responseHttp(con).toString();
             // Creando objeto Json para obtenre el localId de la cuenta
             JSONObject jsonObj = new JSONObject(response);
+            Log.i("ID_USER_RESPONSE",response);
 
+            //Se actuliza el arreglo de que creo bien el usuario
+            result.set(0, "true");
             String idUser = jsonObj.getString("localId");
-
+            //Añado el UID a la lista para retornarla
+            result.add(idUser);
             Log.i("ID_USER",idUser);
-            //JSONObject jsonObjbody = new JSONObject(body);
-            //productID = jsonObjbody.getString("productID");
-            registro = true;
+
         }
 
-        return registro;
+        return result;
     }
 
     /**
@@ -75,9 +79,9 @@ public class Firebase {
      */
     public static ArrayList<String> signInAccount(String email, String password) throws Exception {
 
-        String registrado = "false";
         ArrayList<String> result = new ArrayList<>();
-        result.add(registrado);
+        result.add("false");
+
         String StringURL = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key="+FIREBASE_KEY;
         String postJsonData = "{\"email\":\""+email+"\",\"password\":\""+password+"\"}";
 
@@ -93,19 +97,19 @@ public class Firebase {
 
             String idUser = jsonObj.getString("localId");
 
-            registrado = jsonObj.getString("registered");
+            String registrado = jsonObj.getString("registered");
+
+            //Actualizamos y agregamos la UID.
+            result.set(0,registrado);
+            result.add(idUser);
 
             String token = jsonObj.getString("idToken");
 
-            /*La posición 0 es que si esta o no registrado, la posición 1 es el UID del usuario*/
-            result.set(0, registrado);
-            result.add(idUser);
 
             Log.i("ID_USER","IdUsuario: "+idUser);
             Log.i("ID_USER","Registrado: "+registrado);
             Log.i("ID_USER","Token: "+token);
-            //JSONObject jsonObjbody = new JSONObject(body);
-            //productID = jsonObjbody.getString("productID");
+
         }
 
         return result;
@@ -127,63 +131,13 @@ public class Firebase {
         }
     }
 
-    /*Método de testing para la base de datos*/
+    /*Función que agrega un prestatario a la BD con la llave inventarioID el cual tendrá como llave el RUN */
 
-    public static void testBD(){
-        Usuario usuario = new Usuario(
-                "Centro",
-                "Estudiantes",
-                "cee@lcc.cl",
-                "NB",
-                "admin",
-                "LCC");
-        Prestamo prestamo = new Prestamo(
-                "-MOrorXdqmdDHCD-9pYI",
-                "19/12/2020 13:56",
-                "Devuelto",
-                "24/12/2020",
-                "a6vubdbsNCYXUeJAhBG0EpAFVCF3",
-                "201287022",
-                "a6vubdbsNCYXUeJAhBG0EpAFVCF3");
-        Prestatario prestatario = new Prestatario(
-                "Oscar",
-                "Fritis",
-                "oscar.fritis@usach.cl",
-                "+5693634337",
-                "LCC",
-                "201287022");
-        Categoria categoria = new Categoria("Limpieza");
-
-        //addPrestamo("LCC", prestamo);
-        //addPrestatario("LCC", prestatario, prestatario.getRun());
-        //addUsuario(usuario);
-        //addCategoria("LCC", categoria);
-
-    }
-
-    /*Método que registra un préstamo a la base de datos, al inventario de la carrera respectiva*/
-
-    public static boolean addPrestamo (String inventarioID, Prestamo prestamo){
-        DatabaseReference dataBaseRef;
-        try {
-            dataBaseRef = FirebaseDatabase.getInstance().getReference().child("Prestamos").child(inventarioID);
-            String UploadId = dataBaseRef.push().getKey();
-            dataBaseRef.child(UploadId).setValue(prestamo);
-            return true;
-        }
-        catch (Exception e){
-            return false;
-        }
-    }
-
-    /*Método que registra un prestatario a la base de datos, al inventario de la carrera respectiva*/
-
-    public static boolean addPrestatario (String inventarioID, Prestatario prestatario, String run){
+    public static boolean addDatePrestatario (String inventarioID, Prestatario prestatario, String run){
         DatabaseReference dataBaseRef;
         try {
             dataBaseRef = FirebaseDatabase.getInstance().getReference().child("Prestatarios").child(inventarioID);
-            String UploadId = run;
-            dataBaseRef.child(UploadId).setValue(prestatario);
+            dataBaseRef.child(run).setValue(prestatario);
             return true;
         }
         catch (Exception e){
@@ -191,29 +145,44 @@ public class Firebase {
         }
     }
 
-    /*Método que registra un usuario a la base de datos*/
-
-    public static boolean addUsuario (Usuario usuario){
+    /*Función añade un usuario a la Base de Datos */
+    public static boolean addDataUser (Usuario usuario, String UID){
+        //Obtención de la UID.
         DatabaseReference dataBaseRef;
+
         try {
             dataBaseRef = FirebaseDatabase.getInstance().getReference().child("Usuarios");
-            String UploadId =dataBaseRef.push().getKey();
-            dataBaseRef.child(UploadId).setValue(usuario);
+            dataBaseRef.child(UID).setValue(usuario);
             return true;
         }
         catch (Exception e){
             return false;
         }
+
     }
 
-    /*Método que registra una categoria a la base de datos de inventario correspondiente*/
+    /*Función añade un prestamo a la Base de Datos */
+    public static boolean addDataPrestamo (Prestamo prestamo, String inventarioID){
+        //Obtención de la UID.
+        DatabaseReference dataBaseRef;
 
-    public static boolean addCategoria (String inventarioID, Categoria categoria){
+        try {
+            dataBaseRef = FirebaseDatabase.getInstance().getReference().child("Prestamos").child(inventarioID);
+            dataBaseRef.push().setValue(prestamo);
+            return true;
+        }
+        catch (Exception e){
+            return false;
+        }
+
+    }
+
+    //Actualizar un dato del objeto
+    public static boolean SetDataInventario (String inventarioID, Objeto objeto, String key){
         DatabaseReference dataBaseRef;
         try {
-            dataBaseRef = FirebaseDatabase.getInstance().getReference().child("Categorias").child(inventarioID);
-            String UploadId = dataBaseRef.push().getKey();
-            dataBaseRef.child(UploadId).setValue(categoria);
+            dataBaseRef = FirebaseDatabase.getInstance().getReference().child("Inventarios").child(inventarioID);
+            dataBaseRef.child(key).setValue(objeto);
             return true;
         }
         catch (Exception e){

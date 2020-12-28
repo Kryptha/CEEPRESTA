@@ -14,7 +14,7 @@
     android:backgroundTint="@color/white">
 
     <LinearLayout
-        android:id="@+id/id_tarjeta"
+        android:id="@+id/id_tarjeta_usuario"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -28,11 +28,11 @@
             android:layout_weight="2">
 
             <ImageView
-                android:id="@+id/id_imagen_tarjeta"
+                android:id="@+id/id_foto_usuario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@mipmap/ic_launcher_cee"
+                android:src="@mipmap/ic_launcher_user"
                 android:layout_margin="10dp"/>
         </LinearLayout>
 
@@ -45,45 +45,31 @@
             android:paddingLeft="8dp">
 
             <TextView
-                android:id="@+id/id_nombre_objeto"
+                android:id="@+id/id_nombre_usuario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Paleta de ping-pong"
+                android:text="Oscar Fritis"
                 android:textAllCaps="true"
                 android:textColor="@color/black"
                 android:gravity="left"/>
 
             <TextView
-                android:id="@+id/id_cantidad"
+                android:id="@+id/correo_usuario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Cantidad: 1"
+                android:text="oscar.fritis@usach.cl"
                 android:textColor="@color/black"
                 android:gravity="left"/>
 
-            <TextView
-                android:id="@+id/id_categoria"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Categoría: Tecnología"
-                android:textColor="@color/black"
-                android:gravity="left"/>
 
             <TextView
-                android:id="@+id/id_estado"
+                android:id="@+id/id_rol_usuario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Estado: No disponible"
+                android:text="Centro de estudiantes"
                 android:textColor="@color/black"
-                android:gravity="left"/>
+                android:gravity="left" />
 
-            <TextView
-                android:id="@+id/id_fechareg"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Fecha de registro: 18/12/2020"
-                android:textColor="@color/black"
-                android:gravity="left"/>
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

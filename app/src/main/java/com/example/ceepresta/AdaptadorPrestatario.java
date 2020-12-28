@@ -20,25 +20,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import Clases.Objeto;
-import Clases.Usuario;
+import Clases.Prestatario;
 
 /*Clase Adapatador del objeto donde ayuda a mostrar en pantalla el Recyclerview y la lista, sigue el modelo de imagen como cardview_objeto*/
-public class AdaptadorObjeto extends RecyclerView.Adapter<AdaptadorObjeto.ImageViewHolder> implements Filterable
+public class AdaptadorPrestatario extends RecyclerView.Adapter<AdaptadorPrestatario.ImageViewHolder> implements Filterable
 {
-    private List<Objeto> lista_de_objetos;
-    private  List<Objeto> infoFull;
-    private  Usuario user;
+    private List<Prestatario> lista_de_prestatarios;
+    private List<Prestatario> infoFull;
 
-    public AdaptadorObjeto(List<Objeto> uploads)
+    public AdaptadorPrestatario(List<Prestatario> uploads)
     {
-        lista_de_objetos = uploads;
+        lista_de_prestatarios = uploads;
         /*Lista identica a info pero puede usarse de manera independiente a info*/
-        infoFull = new ArrayList<Objeto>(uploads);
+        infoFull = new ArrayList<Prestatario>(uploads);
 
     }
 
@@ -46,7 +44,7 @@ public class AdaptadorObjeto extends RecyclerView.Adapter<AdaptadorObjeto.ImageV
     @Override
     public ImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_objeto, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.prestatario_cardview, parent, false);
 
         return new ImageViewHolder(v);
     }
@@ -54,45 +52,59 @@ public class AdaptadorObjeto extends RecyclerView.Adapter<AdaptadorObjeto.ImageV
     @Override
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position)
     {
-        Objeto subirActual = lista_de_objetos.get(position);
+        Prestatario subirActual = lista_de_prestatarios.get(position);
 
-        holder.textViewName.setText(subirActual.getNombre());
-        holder.textViewCant.setText("Cantidad: " + subirActual.getCantidad());
-        holder.textViewCateg.setText("Categoría: " + subirActual.getCategoria());
-        holder.textViewEstado.setText("Estado: " + subirActual.getEstado());
-        holder.textViewFecha.setText("Fecha de registro: " + subirActual.getFechaRegistro());
+        holder.textViewName.setText(subirActual.getNombre() + " "+  subirActual.getApellido());
+        holder.textViewRut.setText(subirActual.getRut());
+        if(subirActual.getCarrera().equals("")){
+            holder.textViewCarrera.setText("Carrera sin definir");
+        }
+        else{
+            holder.textViewCarrera.setText(subirActual.getCarrera());
+
+        }
+
+        if(subirActual.getTelefono().equals("")){
+            holder.textViewTel.setText("Teléfono sin definir");
+        }
+        else{
+            holder.textViewTel.setText(subirActual.getTelefono());
+
+        }
+        holder.textViewCorreo.setText(subirActual.getCorreo());
+        /* En caso de a futuro querer guardar la imagen o subirla, colocar esto
         Picasso.get()
-                .load(subirActual.getUrlimage())
-                .placeholder(R.mipmap.ic_launcher_cee)
+                .load(Urlimage)
                 .fit()
                 .centerCrop()
-                .into(holder.imageView);
+                .into(holder.imageView);*/
 
     }
 
     @Override
     public int getItemCount() {
-        return lista_de_objetos.size();
+        return lista_de_prestatarios.size();
     }
 
     // Implementación del filtrado
     @Override
     public Filter getFilter() {
-
         return filtro;
     }
 
     /* Función de búsqueda real y filtrado */
-    private Filter filtro = new Filter() {
+    private Filter filtro = new Filter()
+    {
         @Override
-        protected FilterResults performFiltering(CharSequence charSequence) {
-            List<Objeto> lista_filtrada = new ArrayList<>();
+        protected FilterResults performFiltering(CharSequence charSequence)
+        {
+            List<Prestatario> lista_filtrada_pres = new ArrayList<>();
 
             /*Si el string 'charSequence llega nulo o es de largo 0,
             entonces se muestra la lista completa'*/
             if(charSequence == null || charSequence.length() == 0)
             {
-                lista_filtrada.addAll(infoFull);
+                lista_filtrada_pres.addAll(infoFull);
             }
             else
             {
@@ -105,19 +117,20 @@ public class AdaptadorObjeto extends RecyclerView.Adapter<AdaptadorObjeto.ImageV
                  *       Producto producto_search = Info.get(i);
                  * }
                  * */
-                for(Objeto objeto_search : infoFull)
+                for(Prestatario prestatario_search : infoFull)
                 {
-                    /*Si el nombre la búsqueda (patronDeFiltrado) está en lista
+                    /*Si el nombre o apellido la búsqueda (patronDeFiltrado) está en lista
                      * entonces se agrega a la lista filtrada*/
-                    if(objeto_search.getNombre().toLowerCase().contains(patronDeFiltrado))
+                    if(prestatario_search.getNombre().toLowerCase().contains(patronDeFiltrado) ||
+                            prestatario_search.getApellido().toLowerCase().contains(patronDeFiltrado))
                     {
-                        lista_filtrada.add(objeto_search);
+                        lista_filtrada_pres.add(prestatario_search);
                     }
                 }
             }
 
             FilterResults resultado = new FilterResults();
-            resultado.values = lista_filtrada;
+            resultado.values = lista_filtrada_pres;
             /*Se retorna los resultados del método performFiltering hacia publishResults*/
             return resultado;
         }
@@ -125,8 +138,8 @@ public class AdaptadorObjeto extends RecyclerView.Adapter<AdaptadorObjeto.ImageV
         @Override
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
             /*Se limpia la lista original porque solo se quiere mostrar los resultados filtrados*/
-            lista_de_objetos.clear();
-            lista_de_objetos.addAll((ArrayList) filterResults.values);
+            lista_de_prestatarios.clear();
+            lista_de_prestatarios.addAll((ArrayList) filterResults.values);
             notifyDataSetChanged();
         }
     };
@@ -135,49 +148,28 @@ public class AdaptadorObjeto extends RecyclerView.Adapter<AdaptadorObjeto.ImageV
     public class ImageViewHolder extends RecyclerView.ViewHolder{
 
         public ImageView imageView;
-        public TextView textViewName,  textViewCant, textViewCateg, textViewEstado, textViewFecha;
+        public TextView textViewName,  textViewRut, textViewCarrera, textViewTel, textViewCorreo;
 
         public ImageViewHolder(View itemView)
         {
             super(itemView);
 
-            itemView.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View view)
-                {
-                    int position = getAdapterPosition();
-                    Intent intent = new Intent(view.getContext(), DetallesObjeto_Activity.class);
-                    intent.putExtra("lista_de_objetos", lista_de_objetos.get(position));
-                    intent.putExtra("User", user);
-                    view.getContext().startActivity(intent);
-                }
-            });
-
-            imageView = itemView.findViewById(R.id.id_imagen_tarjeta);
-            textViewName = itemView.findViewById(R.id.id_nombre_objeto);
-            textViewCant = itemView.findViewById(R.id.id_cantidad);
-            textViewCateg = itemView.findViewById(R.id.id_categoria);
-            textViewEstado = itemView.findViewById(R.id.id_estado);
-            textViewFecha = itemView.findViewById(R.id.id_fechareg);
+            imageView = itemView.findViewById(R.id.id_foto_prestatario);
+            textViewName = itemView.findViewById(R.id.id_nombre_prestatario);
+            textViewRut = itemView.findViewById(R.id.rut_prestatario);
+            textViewCarrera = itemView.findViewById(R.id.id_carrera_prestatario);
+            textViewTel = itemView.findViewById(R.id.id_telefono_prestatario);
+            textViewCorreo = itemView.findViewById(R.id.id_correo_prestatario);
         }
     }
 
-    public interface OnItemClickListener {
-        void onItemClick(int position);
-    }
-
     /*Función que reinicia la lista que hay que filtrar y debe mostrar en pantalla*/
-    public void updateData(ArrayList<Objeto> Update)
+    public void updateData (ArrayList<Prestatario> Update)
     {
-        lista_de_objetos.clear();
-        lista_de_objetos.addAll(Update);
+        lista_de_prestatarios.clear();
+        lista_de_prestatarios.addAll(Update);
         infoFull.clear();
         infoFull.addAll(Update);
         notifyDataSetChanged();
-    }
-
-    public void setUser(Usuario usuario){
-        user = usuario;
     }
 }

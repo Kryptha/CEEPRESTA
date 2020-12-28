@@ -6,7 +6,9 @@ import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,10 +25,17 @@ import static BaseDeDatos.Firebase.testBD;
 
 public class Principal_Activity extends AppCompatActivity {
 
+    //Declaración de textos
+    private TextView msgBienvenida, msgRol;
+
     /*Cardviews clickeables del menu */
-    private CardView cvBuscar, cvInventario, cvPrestamos, cvRegistrarObjeto, cvRegistrarUsuario, cvConfiguraciones;
-    // Obtengo la UID desde el inicio sesión
+    private CardView cvPrestatarios, cvInventario, cvPrestamos, cvRegistrarObjeto, cvRegistrarUsuario, cvConfiguraciones;
+    // Declaración de UID
+    private Usuario usuario;
     private String UID;
+    //Autenticación para obtener la UID
+    FirebaseAuth mAuth;
+    DatabaseReference ref;
 
 
     @Override
@@ -34,21 +43,46 @@ public class Principal_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
 
+        //Obtención de la UID desde la autenticación
+        UID = getIntent().getStringExtra("UID");
+        Log.i("UID", UID);
+
+        //Declaración de la referencia
+        ref = FirebaseDatabase.getInstance().getReference();
+
         // Obtención de lo visual
-        cvBuscar = findViewById(R.id.cardview_search);
+        cvPrestatarios = findViewById(R.id.cardview_search);
         cvInventario = findViewById(R.id.cardview_inventario);
         cvPrestamos = findViewById(R.id.cardview_prestamo);
         cvRegistrarObjeto = findViewById(R.id.cardview_registerobjeto);
         cvRegistrarUsuario = findViewById(R.id.cardview_adduser);
         cvConfiguraciones = findViewById(R.id.cardview_settings);
+        msgBienvenida = findViewById(R.id.txv_msg_bienvenida);
+        msgRol = findViewById(R.id.txv_rol_bienvenida);
 
-        // Obtengo la UID desde el inicio sesión
-        UID = getIntent().getStringExtra("UID");
+
+        //Obtención del usuario para actualizar los mensajes de bienvenida (Se debe colocar acá, ya que trabaja en hilos)
+        ref.child("Usuarios").child(UID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if(dataSnapshot.exists()){
+                    usuario = dataSnapshot.getValue(Usuario.class);
+                    setRolText(usuario);
+                    setWelcomeText(usuario);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("Fallo la lectura: " + databaseError.getCode());
+            }
+        });
 
         //Declaración de click de los cardview
-        cvBuscar.setOnClickListener(buttonclick);
+        cvPrestatarios.setOnClickListener(buttonclick);
         cvInventario.setOnClickListener(buttonclick);
         cvRegistrarObjeto.setOnClickListener(buttonclick);
+        cvRegistrarUsuario.setOnClickListener(buttonclick);
 
         //TESTING
         //testBD();
@@ -62,11 +96,15 @@ public class Principal_Activity extends AppCompatActivity {
             if (cvInventario.equals(view)) {
                 openMostrarInventarioActivity();
 
-            } else if (cvBuscar.equals(view)) {
+            } else if (cvPrestatarios.equals(view)) {
+                openMostrarPrestatariosActivity();
 
             }
             else if (cvRegistrarObjeto.equals(view)) {
                 openAgregarObjetoActivity();
+            }
+            else if (cvRegistrarUsuario.equals(view)){
+                openAñadirUsuarioActivity();
             }
         }
     };
@@ -77,12 +115,56 @@ public class Principal_Activity extends AppCompatActivity {
         startActivity(i);
     }
 
+    //Función de abrir la actividad "mostrar prestatarios"
+    public void openMostrarPrestatariosActivity()
+    {
+        Intent i = new Intent(this, MostrarPrestatarios_Activity.class);
+        startActivity(i);
+    }
+
 
     //Función de abrir la actibidad de "Mostrar inventarior"
     public void openMostrarInventarioActivity()
     {
         Intent intent = new Intent(this, Mostrar_Inventario_Activity.class);
+        intent.putExtra("User", usuario);
         startActivity(intent);
+    }
+
+    //Función de abrir la actibidad de "Mostrar inventarior"
+    public void openAñadirUsuarioActivity()
+    {
+        Intent intent = new Intent(this, AñadirUsuario_Activity.class);
+        startActivity(intent);
+    }
+
+
+    public void setWelcomeText (Usuario usuario){
+
+        if(usuario.getGenero().equals("F")){
+            msgBienvenida.setText("Bienvenida " + usuario.getNombre());
+        }
+        else if(usuario.getGenero().equals("M")){
+            msgBienvenida.setText("Bienvenido " + usuario.getNombre());
+        }
+        else{
+            msgBienvenida.setText("Bienvenide " + usuario.getNombre());
+        }
+
+    }
+
+    public void setRolText (Usuario usuario){
+
+        if(usuario.getRol().equals("cee")){
+            msgRol.setText("Centro de estudiantes");
+        }
+        else if(usuario.getRol().equals("admin")){
+            msgRol.setText("Administrador");
+        }
+        else{
+            msgRol.setText("Delegado");
+        }
+
     }
 
 

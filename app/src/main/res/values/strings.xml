@@ -21,4 +21,16 @@
         <item>Reservado</item>
     </string-array>
 
+    <string-array name="genero">
+        <item>Femenino</item>
+        <item>Masculino</item>
+        <item>No binario</item>
+    </string-array>
+
+    <string-array name="rol">
+        <item>Administrador</item>
+        <item>Centro de estudiantes</item>
+        <item>Delegado</item>
+    </string-array>
+
 </resources>

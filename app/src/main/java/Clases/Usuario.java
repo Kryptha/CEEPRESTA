@@ -1,11 +1,18 @@
 package Clases;
 
-public class Usuario {
+import java.io.Serializable;
+
+public class Usuario implements Serializable {
+    private String uid;
     private String nombre, apellido;
     private String correo;
     private String genero;
     private String rol;
     private String inventarioid;
+
+    public Usuario(){
+        //Constructor vacío es necesario.
+    }
 
     public Usuario(String nombre, String apellido, String correo, String genero, String rol, String inventarioid) {
         this.nombre = nombre;
@@ -14,6 +21,14 @@ public class Usuario {
         this.genero = genero;
         this.rol = rol;
         this.inventarioid = inventarioid;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getNombre() {

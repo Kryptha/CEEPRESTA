@@ -1,26 +1,46 @@
 package Clases;
 
 public class Prestamo {
-    private String idObjeto, fechaPrestamo, fechaDevolucion, fechaPlazo, idPrestamista, idPrestatario, idReceptor;
+    private String prestamistaID, prestatarioID, objetoID ,fechaPrestamo, fechaEntrega, fechaDevolucion, receptorID;
 
-    public Prestamo(String idObjeto, String fechaPrestamo, String fechaDevolucion, String fechaPlazo, String idPrestamista, String idPrestatario, String idReceptor) {
+    public Prestamo(){
+        //Constructor vacío
+    }
 
-        this.idObjeto = idObjeto;
+    public Prestamo(String prestamistaID, String prestatarioID, String objetoID,
+                    String fechaPrestamo, String fechaEntrega, String fechaDevolucion, String receptorID) {
+
+        this.prestamistaID = prestamistaID;
+        this.prestatarioID = prestatarioID;
+        this.objetoID = objetoID;
         this.fechaPrestamo = fechaPrestamo;
+        this.fechaEntrega = fechaEntrega;
         this.fechaDevolucion = fechaDevolucion;
-        this.fechaPlazo = fechaPlazo;
-        this.idPrestamista = idPrestamista;
-        this.idPrestatario = idPrestatario;
-        this.idReceptor = idReceptor;
-
+        this.receptorID = receptorID;
     }
 
-    public String getIdObjeto() {
-        return idObjeto;
+    public String getPrestamistaID() {
+        return prestamistaID;
     }
 
-    public void setIdObjeto(String idObjeto) {
-        this.idObjeto = idObjeto;
+    public void setPrestamistaID(String prestamistaID) {
+        this.prestamistaID = prestamistaID;
+    }
+
+    public String getPrestatarioID() {
+        return prestatarioID;
+    }
+
+    public void setPrestatarioID(String prestatarioID) {
+        this.prestatarioID = prestatarioID;
+    }
+
+    public String getObjetoID() {
+        return objetoID;
+    }
+
+    public void setObjetoID(String objetoID) {
+        this.objetoID = objetoID;
     }
 
     public String getFechaPrestamo() {
@@ -31,6 +51,14 @@ public class Prestamo {
         this.fechaPrestamo = fechaPrestamo;
     }
 
+    public String getFechaEntrega() {
+        return fechaEntrega;
+    }
+
+    public void setFechaEntrega(String fechaEntrega) {
+        this.fechaEntrega = fechaEntrega;
+    }
+
     public String getFechaDevolucion() {
         return fechaDevolucion;
     }
@@ -39,35 +67,11 @@ public class Prestamo {
         this.fechaDevolucion = fechaDevolucion;
     }
 
-    public String getFechaPlazo() {
-        return fechaPlazo;
+    public String getReceptorID() {
+        return receptorID;
     }
 
-    public void setFechaPlazo(String fechaPlazo) {
-        this.fechaPlazo = fechaPlazo;
-    }
-
-    public String getIdPrestamista() {
-        return idPrestamista;
-    }
-
-    public void setIdPrestamista(String idPrestamista) {
-        this.idPrestamista = idPrestamista;
-    }
-
-    public String getIdPrestatario() {
-        return idPrestatario;
-    }
-
-    public void setIdPrestatario(String idPrestatario) {
-        this.idPrestatario = idPrestatario;
-    }
-
-    public String getIdReceptor() {
-        return idReceptor;
-    }
-
-    public void setIdReceptor(String idReceptor) {
-        this.idReceptor = idReceptor;
+    public void setReceptorID(String receptorID) {
+        this.receptorID = receptorID;
     }
 }

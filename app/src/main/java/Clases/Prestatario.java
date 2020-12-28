@@ -1,16 +1,21 @@
 package Clases;
 
-public class Prestatario {
-    private String nombre, apellido, correo, telefono, carrera, run;
+public class Prestatario
+{
+    private String nombre, apellido, run, carrera, telefono, correo;
 
-    public Prestatario(String nombre, String apellido, String correo, String telefono, String carrera, String run) {
-
+    public Prestatario(String nombre, String apellido, String carrera, String telefono, String correo) {
         this.nombre = nombre;
         this.apellido = apellido;
-        this.correo = correo;
-        this.telefono = telefono;
         this.carrera = carrera;
-        this.run = run;
+        this.telefono = telefono;
+        this.correo = correo;
+    }
+
+
+    public Prestatario()
+    {
+        //constructor vacío
     }
 
     public String getNombre() {
@@ -29,20 +34,12 @@ public class Prestatario {
         this.apellido = apellido;
     }
 
-    public String getCorreo() {
-        return correo;
+    public String getRut() {
+        return run;
     }
 
-    public void setCorreo(String correo) {
-        this.correo = correo;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
+    public void setRut(String rut) {
+        this.run = rut;
     }
 
     public String getCarrera() {
@@ -53,7 +50,19 @@ public class Prestatario {
         this.carrera = carrera;
     }
 
-    public String getRun() { return run; }
+    public String getTelefono() {
+        return telefono;
+    }
 
-    public void setRun(String run) { this.run = run; }
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
 }
