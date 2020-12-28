@@ -140,13 +140,7 @@
                 android:paddingRight="100dp"
                 android:paddingLeft="100dp"/>
 
-            <Button
-                android:id="@+id/btn_devolver_objeto"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Devolver Objeto"
-                android:layout_gravity="center"
-                android:layout_marginBottom="30dp"/>
+
 
             <Button
                 android:id="@+id/btn_eliminar_objeto"

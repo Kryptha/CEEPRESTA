@@ -47,6 +47,7 @@ import static BaseDeDatos.Firebase.addDataPrestamo;
 public class PrestamoActivity extends AppCompatActivity {
     //Declaración de variables
     private TextView text_prestatario, fecha_entrega;
+    private EditText editxtCantidadPrestamo;
     private ArrayList<Prestatario> listaPrestarios;
     private ArrayList<String> listaNombreDePrestatarios;
     private Dialog dialog_prestatario;
@@ -78,6 +79,7 @@ public class PrestamoActivity extends AppCompatActivity {
         //Asignación de variables
         text_prestatario = findViewById(R.id.txtview_prestatario_seleccion);
         fecha_entrega = findViewById(R.id.txtview_fecha_seleccion);
+        editxtCantidadPrestamo = findViewById(R.id.editxt_cantidad_prestamo);
 
         //Obtención de la fecha actual de prestamo
         Calendar hoy = Calendar.getInstance();
@@ -208,7 +210,9 @@ public class PrestamoActivity extends AppCompatActivity {
 
     }
 
+    //Validacación de la entrada colocada por el usuario
     public boolean ValidarEntrada(){
+        String cantidad = editxtCantidadPrestamo.getText().toString();
         boolean flag = true;
         if (fecha_entrega.getText().equals("")){
             fecha_entrega.setError("Debe elegir la fecha de entrega");
@@ -216,6 +220,14 @@ public class PrestamoActivity extends AppCompatActivity {
         }
         if (text_prestatario.getText().equals("")){
             fecha_entrega.setError("Debe elegir un prestatario existente");
+            flag = false;
+        }
+        if(cantidad.equals("")){
+            editxtCantidadPrestamo.setError("Debe ingresar la cantidad a prestar");
+            flag = false;
+        }
+        if(Integer.parseInt(objeto.getCantidad()) - Integer.parseInt(cantidad) < 0  ){
+            editxtCantidadPrestamo.setError("La cantidad ingresada supera su inventario.");
             flag = false;
         }
 
@@ -226,7 +238,7 @@ public class PrestamoActivity extends AppCompatActivity {
     public void ConfirmarPrestamoClick(View view) {
         if (ValidarEntrada()){
             //En este caso aún no se ha devuelto el objeto por ende no se puede colocar fecha de devolución, ni el receptor
-            Prestamo prestamo = new Prestamo(currentUser.getUid(), prestatarioID, objeto.getKey(), fecha_prestamo, fecha_plazo_entrega, "", "");
+            Prestamo prestamo = new Prestamo(currentUser.getUid(), prestatarioID, objeto.getKey(), fecha_prestamo, fecha_plazo_entrega, "", "", editxtCantidadPrestamo.getText().toString());
             //Se añade el prestamo a la base de datos
             addDataPrestamo(prestamo, "LCC");
             //Se actualiza el objeto
@@ -234,6 +246,7 @@ public class PrestamoActivity extends AppCompatActivity {
             objeto.setLastFechaPrestamo(fecha_prestamo);
             objeto.setLastPrestatario(text_prestatario.getText().toString());
             objeto.setLastPrestamista(currentUser.getNombre() + " " + currentUser.getApellido());
+            objeto.setCantidad(editxtCantidadPrestamo.getText().toString());
             //Se actualiza la base de datos
             SetDataInventario("LCC", objeto, objeto.getKey());
             Toast.makeText(getApplicationContext(), "Prestamo realizado", Toast.LENGTH_SHORT).show();

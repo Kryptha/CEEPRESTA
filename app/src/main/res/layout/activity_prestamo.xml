@@ -47,6 +47,16 @@
     </RelativeLayout>
 
 
+        <EditText
+            android:id="@+id/editxt_cantidad_prestamo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_edittext"
+            android:hint="Ingrese la cantidad a prestar"
+            android:textColorHint="#495358"
+            android:padding="12dp"
+            android:textColor="@color/black"
+            />
 
 
     <TextView
@@ -57,7 +67,7 @@
         android:hint="Seleccione un prestatario"
         android:textColorHint="#495358"
         android:textColor="@color/background"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:padding="12dp"
         android:gravity="center_vertical"
         android:drawableEnd="@drawable/ic_drow"

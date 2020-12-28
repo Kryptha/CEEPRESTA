@@ -1,14 +1,14 @@
 package Clases;
 
 public class Prestamo {
-    private String prestamistaID, prestatarioID, objetoID ,fechaPrestamo, fechaEntrega, fechaDevolucion, receptorID;
+    private String prestamistaID, prestatarioID, objetoID ,fechaPrestamo, fechaEntrega, fechaDevolucion, receptorID, cantidad;
 
     public Prestamo(){
         //Constructor vacío
     }
 
     public Prestamo(String prestamistaID, String prestatarioID, String objetoID,
-                    String fechaPrestamo, String fechaEntrega, String fechaDevolucion, String receptorID) {
+                    String fechaPrestamo, String fechaEntrega, String fechaDevolucion, String receptorID, String cantidad) {
 
         this.prestamistaID = prestamistaID;
         this.prestatarioID = prestatarioID;
@@ -17,6 +17,7 @@ public class Prestamo {
         this.fechaEntrega = fechaEntrega;
         this.fechaDevolucion = fechaDevolucion;
         this.receptorID = receptorID;
+        this.cantidad = cantidad;
     }
 
     public String getPrestamistaID() {
