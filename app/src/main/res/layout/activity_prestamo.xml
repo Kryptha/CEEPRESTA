@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@drawable/backgroundgeneral"
+    tools:context=".PrestamoActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="10dp">
+
+        <ImageView
+            android:id="@+id/imgv_prestamo"
+            android:layout_alignParentRight="true"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/lean"/>
+
+        <TextView
+            android:id="@+id/txv_msg_prestamo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Préstamo"
+            android:textColor="#FFFFFF"
+            android:textSize="24dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txv_descripcion_prestamo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txv_msg_prestamo"
+            android:text="Recuerde que debe existir el prestatario"
+            android:textColor="#FFFFFF"
+            android:textSize="12dp" />
+    </RelativeLayout>
+
+
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtview_prestatario_seleccion"
+        android:background="@drawable/rounded_edittext"
+        android:hint="Seleccione un prestatario"
+        android:textColorHint="#495358"
+        android:textColor="@color/background"
+        android:layout_marginTop="30dp"
+        android:padding="12dp"
+        android:gravity="center_vertical"
+        android:drawableEnd="@drawable/ic_drow"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtview_fecha_seleccion"
+        android:background="@drawable/rounded_edittext"
+        android:hint="Ingrese la fecha de entrega"
+        android:textColorHint="#495358"
+        android:textColor="@color/background"
+        android:layout_marginTop="20dp"
+        android:padding="12dp"
+        android:gravity="center_vertical"
+        android:layout_below="@+id/txtview_prestatario_seleccion"
+        android:drawableEnd="@drawable/ic_drow"
+        />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:onClick="ConfirmarPrestamoClick"
+            android:text="Realizar préstamo"/>
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

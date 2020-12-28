@@ -25,12 +25,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Clases.Objeto;
+import Clases.Usuario;
 
 /*Clase Adapatador del objeto donde ayuda a mostrar en pantalla el Recyclerview y la lista, sigue el modelo de imagen como cardview_objeto*/
 public class AdaptadorObjeto extends RecyclerView.Adapter<AdaptadorObjeto.ImageViewHolder> implements Filterable
 {
     private List<Objeto> lista_de_objetos;
     private  List<Objeto> infoFull;
+    private  Usuario user;
 
     public AdaptadorObjeto(List<Objeto> uploads)
     {
@@ -147,6 +149,7 @@ public class AdaptadorObjeto extends RecyclerView.Adapter<AdaptadorObjeto.ImageV
                     int position = getAdapterPosition();
                     Intent intent = new Intent(view.getContext(), DetallesObjeto_Activity.class);
                     intent.putExtra("lista_de_objetos", lista_de_objetos.get(position));
+                    intent.putExtra("User", user);
                     view.getContext().startActivity(intent);
                 }
             });
@@ -172,5 +175,9 @@ public class AdaptadorObjeto extends RecyclerView.Adapter<AdaptadorObjeto.ImageV
         infoFull.clear();
         infoFull.addAll(Update);
         notifyDataSetChanged();
+    }
+
+    public void setUser(Usuario usuario){
+        user = usuario;
     }
 }

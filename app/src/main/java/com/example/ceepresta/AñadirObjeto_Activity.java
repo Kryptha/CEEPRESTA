@@ -85,7 +85,7 @@ public class AñadirObjeto_Activity extends AppCompatActivity implements Adapter
 
         //Obtención de la fecha
         Calendar hoy = Calendar.getInstance();
-        fecha = String.valueOf(hoy.get(Calendar.DAY_OF_MONTH)) + String.valueOf(hoy.get(Calendar.MONTH)+1) + String.valueOf(hoy.get(Calendar.YEAR));
+        fecha = String.valueOf(hoy.get(Calendar.DAY_OF_MONTH)) + "/" + String.valueOf(hoy.get(Calendar.MONTH)+1) + "/" +  String.valueOf(hoy.get(Calendar.YEAR));
 
         //Declaración del storage de imagenes
         storagefeRef = FirebaseStorage.getInstance().getReference("imagenObjetos");
@@ -210,7 +210,8 @@ public class AñadirObjeto_Activity extends AppCompatActivity implements Adapter
                             if (!categoriaObjeto.equals("") && !estadoObjeto.equals("")){
                                 //Se crea el objeto con los datos necesarios
                                 Objeto objeto = new Objeto(nameObjeto.getText().toString().trim(), estadoObjeto , fecha
-                                        , downloadUrl.toString(), cantidadObjeto.getText().toString().trim(), categoriaObjeto);
+                                        , downloadUrl.toString(), cantidadObjeto.getText().toString().trim(), categoriaObjeto,
+                                        "", "", "", "", "");
 
                                 //Se añade el objeto al inventarioID, si la base de datos falla manda un "false"
                                 if(addDateInventario(inventarioID, objeto)){

@@ -25,6 +25,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import Clases.Objeto;
+import Clases.Prestamo;
 import Clases.Prestatario;
 import Clases.Usuario;
 
@@ -156,6 +157,35 @@ public class Firebase {
             return false;
         }
 
+    }
+
+    /*Función añade un prestamo a la Base de Datos */
+    public static boolean addDataPrestamo (Prestamo prestamo, String inventarioID){
+        //Obtención de la UID.
+        DatabaseReference dataBaseRef;
+
+        try {
+            dataBaseRef = FirebaseDatabase.getInstance().getReference().child("Prestamos").child(inventarioID);
+            dataBaseRef.push().setValue(prestamo);
+            return true;
+        }
+        catch (Exception e){
+            return false;
+        }
+
+    }
+
+    //Actualizar un dato del objeto
+    public static boolean SetDataInventario (String inventarioID, Objeto objeto, String key){
+        DatabaseReference dataBaseRef;
+        try {
+            dataBaseRef = FirebaseDatabase.getInstance().getReference().child("Inventarios").child(inventarioID);
+            dataBaseRef.child(key).setValue(objeto);
+            return true;
+        }
+        catch (Exception e){
+            return false;
+        }
     }
 
 

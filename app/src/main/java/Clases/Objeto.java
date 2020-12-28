@@ -4,20 +4,68 @@ import java.io.Serializable;
 
 public class Objeto implements Serializable
 {
-    private String key, nombre, estado, fechaRegistro, imageUrl, cantidad, categoria;
+    private String key, nombre, estado, fechaRegistro, imageUrl, cantidad, categoria, UID;
+    private String lastPrestatario, lastPrestamista, lastFechaDevolución, lastFechaPrestamo, lastReceptor;
 
-    public Objeto(String nombre, String estado, String fechaRegistro, String imageUrl, String cantidad, String categoria) {
+    public Objeto(String nombre, String estado, String fechaRegistro, String imageUrl, String cantidad,
+                  String categoria, String lastPrestatario, String lastPrestamista, String lastFechaDevolución,
+                  String lastFechaPrestamo, String lastReceptor) {
         this.nombre = nombre;
         this.estado = estado;
         this.fechaRegistro = fechaRegistro;
         this.imageUrl = imageUrl;
         this.cantidad = cantidad;
         this.categoria = categoria;
+        this.lastPrestatario = lastPrestatario;
+        this.lastPrestamista = lastPrestamista;
+        this.lastFechaDevolución = lastFechaDevolución;
+        this.lastFechaPrestamo = lastFechaPrestamo;
+        this.lastReceptor = lastReceptor;
     }
 
     public Objeto()
     {
         //Constructor vacío es necesario.
+    }
+
+    public String getLastPrestatario() {
+        return lastPrestatario;
+    }
+
+    public void setLastPrestatario(String lastPrestatario) {
+        this.lastPrestatario = lastPrestatario;
+    }
+
+    public String getLastPrestamista() {
+        return lastPrestamista;
+    }
+
+    public void setLastPrestamista(String lastPrestamista) {
+        this.lastPrestamista = lastPrestamista;
+    }
+
+    public String getLastFechaDevolución() {
+        return lastFechaDevolución;
+    }
+
+    public void setLastFechaDevolución(String lastFechaDevolución) {
+        this.lastFechaDevolución = lastFechaDevolución;
+    }
+
+    public String getLastFechaPrestamo() {
+        return lastFechaPrestamo;
+    }
+
+    public void setLastFechaPrestamo(String lastFechaPrestamo) {
+        this.lastFechaPrestamo = lastFechaPrestamo;
+    }
+
+    public String getLastReceptor() {
+        return lastReceptor;
+    }
+
+    public void setLastReceptor(String lastReceptor) {
+        this.lastReceptor = lastReceptor;
     }
 
     public String getKey() {

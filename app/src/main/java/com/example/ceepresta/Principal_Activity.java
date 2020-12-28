@@ -123,6 +123,7 @@ public class Principal_Activity extends AppCompatActivity {
     public void openMostrarInventarioActivity()
     {
         Intent intent = new Intent(this, Mostrar_Inventario_Activity.class);
+        intent.putExtra("User", usuario);
         startActivity(intent);
     }
 

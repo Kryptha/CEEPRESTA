@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Clases.Objeto;
+import Clases.Usuario;
 
 public class Mostrar_Inventario_Activity extends AppCompatActivity{
 
@@ -52,6 +53,9 @@ public class Mostrar_Inventario_Activity extends AppCompatActivity{
     //Obtención del searchview
     private SearchView searchview;
 
+    //UID del usuario que inicio sesión
+    private Usuario user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +65,8 @@ public class Mostrar_Inventario_Activity extends AppCompatActivity{
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));//Default: vertical
+
+        user = (Usuario) getIntent().getSerializableExtra("User");
 
         //Circulo de progreso antes de mostrar la lista
         circulo_progreso = findViewById(R.id.progress_circle);
@@ -93,6 +99,7 @@ public class Mostrar_Inventario_Activity extends AppCompatActivity{
                 //Adapatador del Recyclerview, que mostrará la lista de objetos
                 adaptadorObjeto = new AdaptadorObjeto(lista_de_objetos);
                 recyclerView.setAdapter(adaptadorObjeto);
+                adaptadorObjeto.setUser(user);
 
                 /* Funciones de la barra de búsqueda*/
                 initSearchWidgets();
