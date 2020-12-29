@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.StorageReference;
@@ -83,6 +84,9 @@ public class AdaptadorUsuarios extends RecyclerView.Adapter<AdaptadorUsuarios.Im
                         public void onClick(View view)
                         {  //Obtenelo la llave para borrar
                             String llave_seleccionada = lista_de_usuarios.get(position).getUid();
+
+
+
 
                             //Removemos el valor de la base de datos
                             ref_db.child(llave_seleccionada).removeValue();

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +38,10 @@ public class Principal_Activity extends AppCompatActivity {
     DatabaseReference ref;
     //Declaración de circulo de progreso
     private ProgressBar circulo_progreso;
+    //Declaración de imagenes y textos para deshabilitarr según rango
+    private TextView txtAddUser, txtAddObject;
+    private ImageView imgAddUser, imgAddObject;
+
 
 
     @Override
@@ -46,7 +51,6 @@ public class Principal_Activity extends AppCompatActivity {
 
         //Obtención de la UID desde la autenticación
         UID = getIntent().getStringExtra("UID");
-        Log.i("UID", UID);
 
         //Declaración de la referencia
         ref = FirebaseDatabase.getInstance().getReference();
@@ -60,6 +64,11 @@ public class Principal_Activity extends AppCompatActivity {
         cvConfiguraciones = findViewById(R.id.cardview_settings);
         msgBienvenida = findViewById(R.id.txv_msg_bienvenida);
         msgRol = findViewById(R.id.txv_rol_bienvenida);
+        //Aspecto visual  de cardviews que se pueden o no desahbilitar
+        txtAddObject = findViewById(R.id.txtvAddObject);
+        txtAddUser = findViewById(R.id.txtvAddUser);
+        imgAddObject = findViewById(R.id.imgvwAddObject);
+        imgAddUser = findViewById(R.id.imgvwAddUser);
         //Circulo de progreso antes de mostrar el mensaje de bienvenida
         circulo_progreso = findViewById(R.id.progress_circle_home);
 
@@ -71,8 +80,10 @@ public class Principal_Activity extends AppCompatActivity {
 
                 if(dataSnapshot.exists()){
                     usuario = dataSnapshot.getValue(Usuario.class);
+                    usuario.setUid(UID);
                     setRolText(usuario);
                     setWelcomeText(usuario);
+                    setBotton(usuario);
                     circulo_progreso.setVisibility(View.INVISIBLE);
                 }
             }
@@ -170,5 +181,26 @@ public class Principal_Activity extends AppCompatActivity {
 
     }
 
+    public void setBotton(Usuario usuario){
+        if(usuario.getRol().equals("cee")){
+            //Desahbilitir el botón de "registrar usuario"
+            cvRegistrarUsuario.setEnabled(false);
+            imgAddUser.setImageResource(R.drawable.adduserenable);
+            txtAddUser.setText("Sin autorización");
+
+        }
+        if(usuario.getRol().equals("delegado")){
+            //Desahbilitir el botón de "registrar usuario"
+            cvRegistrarUsuario.setEnabled(false);
+            imgAddUser.setImageResource(R.drawable.adduserenable);
+            txtAddUser.setText("Sin autorización");
+            //Desabilitar botón de "registrar objeto"
+            cvRegistrarObjeto.setEnabled(false);
+            imgAddObject.setImageResource(R.drawable.registerobjetoenable);
+            txtAddObject.setText("Sin autorización");
+
+
+        }
+    }
 
 }

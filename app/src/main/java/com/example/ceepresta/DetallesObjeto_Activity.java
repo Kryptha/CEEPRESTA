@@ -33,13 +33,18 @@ import Clases.Usuario;
 
 public class DetallesObjeto_Activity extends AppCompatActivity
 {
+    //Declaración de variable visuales
     private TextView nombreDetalle, estadoDetalle, fechaRegDetalle;
     private TextView lastPrestatario, lastPrestamista, lastReceptor, lastFechaPrestamo, lastFechaDevolución;
     private ImageView imgObjetoDetalle;
+    private Button btnPrestar;
+    //Declaración de base de datos y storage
     private FirebaseStorage fbstorage_ref_almac;
     private DatabaseReference ref_db;
+    //Declaración de objeto y usuario
     private Objeto objeto_recibido, objetoShow;
     private Usuario currentUser;
+    //Declaración de diálogo
     Dialog dialog;
 
     //Para obtener una referencia a las imagenes en Firebase Storage
@@ -60,6 +65,7 @@ public class DetallesObjeto_Activity extends AppCompatActivity
         estadoDetalle = findViewById(R.id.tv_estado_detalle);
         fechaRegDetalle = findViewById(R.id.tv_fechaReg_detalle);
         imgObjetoDetalle = findViewById(R.id.iv_imgObjeto_detalle);
+        btnPrestar = findViewById(R.id.btn_prestar_objeto);
 
         //Declaración de datos de último prestamo y devolución
         lastFechaDevolución = findViewById(R.id.tv_ultvez_dev);
@@ -102,6 +108,12 @@ public class DetallesObjeto_Activity extends AppCompatActivity
                     lastPrestatario.setText("Último prestatario: " + ultiPrestatario);
                     String ultiReceptor = objeto.getLastReceptor().equals("") ? "Sin Receptor" : objeto.getLastReceptor();
                     lastReceptor.setText("Último receptor: " + ultiReceptor);
+
+                    //En caso de que no hayan objetos suficiente para prestar o el estado sea No disponible para prestar
+                    //Entonces se inhabilita el botón
+                    if(objeto.getCantidad().equals("0") || objeto.getEstado().equals("No Disponible")){
+                        btnPrestar.setEnabled(false);
+                    }
 
             }
 

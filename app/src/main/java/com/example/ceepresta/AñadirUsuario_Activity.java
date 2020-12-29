@@ -87,8 +87,6 @@ public class AñadirUsuario_Activity extends AppCompatActivity implements Adapte
                                     //Rellanar los datos del Usuario
                                     Usuario usuario = new Usuario(nombreUsuario.getText().toString(), apellidoUsuario.getText().toString()
                                             , correoUsuario.getText().toString(), generoSeleccionado, rolSeleccionado, inventarioID );
-                                    //Añade el prestatario a la base de datos en "Prestatario - > InventarioID" con la clave de su RUN.
-
                                     if (addDataUser(usuario, resultRegister.get(1))) {
                                         Toast.makeText(getApplicationContext(), "Usuario añadido", Toast.LENGTH_SHORT).show();
                                         clearText();
