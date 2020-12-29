@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_cee_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CeePresta">
-        <activity android:name=".PrestamoActivity"></activity>
+        <activity android:name=".PrestamoActivity"/>
+        <activity android:name=".MostrarPrestamos_Activity"/>
         <activity android:name=".ListaDeUsuarios_Activity" />
         <activity android:name=".AñadirUsuario_Activity" />
         <activity android:name=".AñadirPrestatario_Activity" />

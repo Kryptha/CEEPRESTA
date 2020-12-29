@@ -107,7 +107,7 @@ public class PrestamoActivity extends AppCompatActivity {
                     //Añado el prestatarios extraido a la lista
                     listaPrestarios.add(prestatario);
                     //Añado el nombre a la lista a mostrar
-                    listaNombreDePrestatarios.add(prestatario.getNombre() + " " + prestatario.getApellido() );
+                    listaNombreDePrestatarios.add(prestatario.getNombre() + " " + prestatario.getApellido());
                 }
 
             }
@@ -169,7 +169,6 @@ public class PrestamoActivity extends AppCompatActivity {
                         //Cuando seleccione un item de la lista
                         //Se muestra en el textview
                         text_prestatario.setText(adapter.getItem(position));
-                        prestatarioID = listaPrestarios.get(position).getRut();
                         //Salimos del diálogo
                         dialog_prestatario.dismiss();
                     }
@@ -226,7 +225,7 @@ public class PrestamoActivity extends AppCompatActivity {
     public void ConfirmarPrestamoClick(View view) {
         if (ValidarEntrada()){
             //En este caso aún no se ha devuelto el objeto por ende no se puede colocar fecha de devolución, ni el receptor
-            Prestamo prestamo = new Prestamo(currentUser.getUid(), prestatarioID, objeto.getKey(), fecha_prestamo, fecha_plazo_entrega, "", "");
+            Prestamo prestamo = new Prestamo(currentUser.getNombre() +" "+ currentUser.getApellido(), text_prestatario.getText().toString(), objeto.getKey(), fecha_prestamo, fecha_plazo_entrega, "", "");
             //Se añade el prestamo a la base de datos
             addDataPrestamo(prestamo, "LCC");
             //Se actualiza el objeto

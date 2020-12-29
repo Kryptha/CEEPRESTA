@@ -1,7 +1,9 @@
 package Clases;
 
-public class Prestamo {
-    private String prestamistaID, prestatarioID, objetoID ,fechaPrestamo, fechaEntrega, fechaDevolucion, receptorID;
+import java.io.Serializable;
+
+public class Prestamo implements Serializable {
+    private String key, prestamistaID, prestatarioID, objetoID ,fechaPrestamo, fechaEntrega, fechaDevolucion, receptorID;
 
     public Prestamo(){
         //Constructor vacío
@@ -73,5 +75,13 @@ public class Prestamo {
 
     public void setReceptorID(String receptorID) {
         this.receptorID = receptorID;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }
