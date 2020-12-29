@@ -33,4 +33,8 @@
         <item>Delegado</item>
     </string-array>
 
+    <string name="editar_un_objeto">Editar un objeto</string>
+    <string name="elegir_otra_imagen">ELEGIR OTRA IMAGEN</string>
+    <string name="editar_objeto">Editar objeto</string>
+    <string name="volver_al_inventario">Volver al inventario</string>
 </resources>

@@ -21,7 +21,6 @@ import com.google.firebase.database.ValueEventListener;
 import Clases.Objeto;
 import Clases.Usuario;
 
-import static BaseDeDatos.Firebase.testBD;
 
 public class Principal_Activity extends AppCompatActivity {
 
