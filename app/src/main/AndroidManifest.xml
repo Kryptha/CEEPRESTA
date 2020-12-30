@@ -11,6 +11,7 @@
         android:theme="@style/Theme.CeePresta">
         <activity android:name=".EditarObjeto_Activity"></activity>
         <activity android:name=".PrestamoActivity" />
+        <activity android:name=".MostrarPrestamos_Activity"/>
         <activity android:name=".ListaDeUsuarios_Activity" />
         <activity android:name=".AñadirUsuario_Activity" />
         <activity android:name=".AñadirPrestatario_Activity" />

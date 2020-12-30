@@ -100,6 +100,7 @@ public class Principal_Activity extends AppCompatActivity {
         cvInventario.setOnClickListener(buttonclick);
         cvRegistrarObjeto.setOnClickListener(buttonclick);
         cvRegistrarUsuario.setOnClickListener(buttonclick);
+        cvPrestamos.setOnClickListener(buttonclick);
 
         //TESTING
         //testBD();
@@ -107,7 +108,8 @@ public class Principal_Activity extends AppCompatActivity {
     }
 
     //Función donde cliclea dependiendo del cardview seleccionado (AÚN FALTAN ALGUNOS PERO ES LA MISMA LÓGICA)
-    private View.OnClickListener buttonclick = new View.OnClickListener() {
+    private View.OnClickListener buttonclick = new View.OnClickListener()
+    {
         @Override
         public void onClick(View view) {
             if (cvInventario.equals(view)) {
@@ -123,8 +125,18 @@ public class Principal_Activity extends AppCompatActivity {
             else if (cvRegistrarUsuario.equals(view)){
                 openUsuarioActivity();
             }
+            else if (cvPrestamos.equals(view)){
+                openPrestamosActivity();
+            }
         }
     };
+
+    //Función para abrir la actividad "Ver préstamos"
+    private void openPrestamosActivity(){
+        Intent i = new Intent(this, MostrarPrestamos_Activity.class);
+        i.putExtra("User", usuario);
+        startActivity(i);
+    }
 
     //Función de abrir la actividad de "añadir objetos"
     public void openAgregarObjetoActivity(){
