@@ -23,7 +23,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 
+import Clases.Categoria;
 import Clases.Objeto;
 import Clases.Prestamo;
 import Clases.Prestatario;

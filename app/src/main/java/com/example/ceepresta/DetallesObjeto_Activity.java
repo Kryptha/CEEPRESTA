@@ -126,7 +126,25 @@ public class DetallesObjeto_Activity extends AppCompatActivity
             }
         });
 
+        //Se verifica si el usuario es delegado o no, para deshabilitar la edicion de objeto o no.
+        if(currentUser.getRol().equals("Delegado"))
+        {
+            Button edit_obj;
+            edit_obj = findViewById(R.id.btn_editar_detalle);
+            edit_obj.setEnabled(false);
+        }
 
+
+
+    }
+
+    public void onEditClick(View view)
+    {
+
+        Intent i = new Intent(this, EditarObjeto_Activity.class);
+        i.putExtra("ObjetoSeleccionado", objeto_recibido);
+        i.putExtra("User", currentUser);
+        startActivity(i);
 
     }
 

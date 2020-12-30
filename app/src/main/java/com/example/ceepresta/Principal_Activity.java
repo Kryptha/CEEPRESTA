@@ -23,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import Clases.Objeto;
 import Clases.Usuario;
 
+
 public class Principal_Activity extends AppCompatActivity {
 
     //Declaración de textos
@@ -100,6 +101,8 @@ public class Principal_Activity extends AppCompatActivity {
         cvRegistrarObjeto.setOnClickListener(buttonclick);
         cvRegistrarUsuario.setOnClickListener(buttonclick);
 
+        //TESTING
+        //testBD();
 
     }
 
