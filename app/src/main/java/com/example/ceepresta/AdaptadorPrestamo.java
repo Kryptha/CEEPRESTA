@@ -91,6 +91,7 @@ public class AdaptadorPrestamo extends RecyclerView.Adapter<AdaptadorPrestamo.Im
         holder.prestatarioTview.setText("Prestatario: " + subirActual.getPrestatarioID());
         holder.fPrestamoTview.setText("Fecha Préstamo: " + subirActual.getFechaPrestamo());
         holder.fEntregaTview.setText("Fecha Entrega: " + subirActual.getFechaEntrega());
+        holder.cantidadTview.setText("Cantidad: " + subirActual.getCantidad());
 
         if(subirActual.getFechaDevolucion().equals(""))
             holder.fDevolucionTview.setText("Sin fecha de devolución");
@@ -171,7 +172,7 @@ public class AdaptadorPrestamo extends RecyclerView.Adapter<AdaptadorPrestamo.Im
     public class ImageViewHolder extends RecyclerView.ViewHolder
     {
         public ImageView imageView, btn_devolver;
-        public TextView prestamistaTview, prestatarioTview, fPrestamoTview, fEntregaTview, fDevolucionTview, receptorTview;
+        public TextView prestamistaTview, prestatarioTview, fPrestamoTview, fEntregaTview, fDevolucionTview, receptorTview, cantidadTview;
 
         Calendar hoy = Calendar.getInstance();
 
@@ -182,7 +183,7 @@ public class AdaptadorPrestamo extends RecyclerView.Adapter<AdaptadorPrestamo.Im
 
             imageView = itemView.findViewById(R.id.id_imagen_prestamo);
             btn_devolver = itemView.findViewById(R.id.id_imagen_devolver);
-
+            cantidadTview = itemView.findViewById(R.id.idCV_cantidad);
             prestamistaTview = itemView.findViewById(R.id.idCV_prestamista);
             prestatarioTview = itemView.findViewById(R.id.idCV_prestatario);
             fPrestamoTview = itemView.findViewById(R.id.idCV_fechaPrestamo);
@@ -198,11 +199,12 @@ public class AdaptadorPrestamo extends RecyclerView.Adapter<AdaptadorPrestamo.Im
                 public void onClick(View view)
                 {
                     int position = getAdapterPosition();
-
+                    //Para actualizar el préstamos ya que se ha devuelto, debemo agregarle la fecha y el receptor.
                     Prestamo prestamo = new Prestamo(lista_de_objetos.get(position).getPrestamistaID(), lista_de_objetos.get(position).getPrestatarioID(), lista_de_objetos.get(position).getObjetoID(),
                             lista_de_objetos.get(position).getFechaPrestamo(), lista_de_objetos.get(position).getFechaEntrega(),
-                            fecha_entrega , currentUser.getNombre() + " " + currentUser.getApellido());
-                    
+                            fecha_entrega , currentUser.getNombre() + " " + currentUser.getApellido(), lista_de_objetos.get(position).getCantidad());
+                    //Actualizar objeto
+                     
                     try
                     {
                         DatabaseReference ref_db_set = FirebaseDatabase.getInstance().getReference().child("Prestamos").child(currentUser.getInventarioid()).child(lista_de_objetos.get(position).getKey());

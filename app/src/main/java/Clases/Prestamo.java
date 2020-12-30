@@ -3,7 +3,7 @@ package Clases;
 import java.io.Serializable;
 
 public class Prestamo implements Serializable {
-    private String key, prestamistaID, prestatarioID, objetoID ,fechaPrestamo, fechaEntrega, fechaDevolucion, receptorID;
+    private String key, prestamistaID, prestatarioID, objetoID ,fechaPrestamo, fechaEntrega, fechaDevolucion, receptorID, cantidad;
 
     public Prestamo(){
         //Constructor vacío
@@ -19,6 +19,14 @@ public class Prestamo implements Serializable {
         this.fechaEntrega = fechaEntrega;
         this.fechaDevolucion = fechaDevolucion;
         this.receptorID = receptorID;
+        this.cantidad = cantidad;
+    }
+
+    public String getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(String cantidad) {
         this.cantidad = cantidad;
     }
 

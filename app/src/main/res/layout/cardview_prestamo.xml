@@ -90,6 +90,14 @@
                 android:text="Receptor: Oscar Fritis"
                 android:textColor="@color/black"
                 android:gravity="left"/>
+
+            <TextView
+                android:id="@+id/idCV_cantidad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cantidad: 0"
+                android:textColor="@color/black"
+                android:gravity="left"/>
         </LinearLayout>
 
         <LinearLayout
