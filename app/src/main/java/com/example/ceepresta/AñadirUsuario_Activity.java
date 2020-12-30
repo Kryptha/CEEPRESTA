@@ -30,12 +30,13 @@ public class AñadirUsuario_Activity extends AppCompatActivity implements Adapte
     private EditText nombreUsuario, apellidoUsuario, correoUsuario, passwordUsuario;
     private Spinner generoUsuario, rolUsuario;
     private Button btn_save_usuario, btn_volver_usuario;
-    //Saber en que carrera pertenece los datos
-    private String inventarioID = "LCC";
     //Inicializar la selección de los spinners
     private String rolSeleccionado, generoSeleccionado;
     //Resultado al momento de registrar el usuario
     private ArrayList<String> resultRegister;
+
+    //UID del usuario que inicio sesión
+    private Usuario currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,8 @@ public class AñadirUsuario_Activity extends AppCompatActivity implements Adapte
         generoUsuario = findViewById(R.id.spinner_genero);
         rolUsuario = findViewById(R.id.spinner_rol);
         passwordUsuario = findViewById(R.id.editxt_password_usuario);
+
+        currentUser = (Usuario) getIntent().getSerializableExtra("User");
 
         //Obtención de botones
         btn_save_usuario = findViewById(R.id.btn_save_añadirUsuario);
@@ -86,7 +89,9 @@ public class AñadirUsuario_Activity extends AppCompatActivity implements Adapte
                                 if(finalRegistro){
                                     //Rellanar los datos del Usuario
                                     Usuario usuario = new Usuario(nombreUsuario.getText().toString(), apellidoUsuario.getText().toString()
-                                            , correoUsuario.getText().toString(), generoSeleccionado, rolSeleccionado, inventarioID );
+                                            , correoUsuario.getText().toString(), generoSeleccionado, rolSeleccionado, currentUser.getInventarioid());
+                                    //Añade el prestatario a la base de datos en "Prestatario - > InventarioID" con la clave de su RUN.
+
                                     if (addDataUser(usuario, resultRegister.get(1))) {
                                         Toast.makeText(getApplicationContext(), "Usuario añadido", Toast.LENGTH_SHORT).show();
                                         clearText();

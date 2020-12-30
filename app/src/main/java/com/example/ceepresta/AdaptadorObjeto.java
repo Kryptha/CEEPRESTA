@@ -32,7 +32,7 @@ public class AdaptadorObjeto extends RecyclerView.Adapter<AdaptadorObjeto.ImageV
 {
     private List<Objeto> lista_de_objetos;
     private  List<Objeto> infoFull;
-    private  Usuario user;
+    private  Usuario currentUser;
 
     public AdaptadorObjeto(List<Objeto> uploads)
     {
@@ -149,7 +149,7 @@ public class AdaptadorObjeto extends RecyclerView.Adapter<AdaptadorObjeto.ImageV
                     int position = getAdapterPosition();
                     Intent intent = new Intent(view.getContext(), DetallesObjeto_Activity.class);
                     intent.putExtra("lista_de_objetos", lista_de_objetos.get(position));
-                    intent.putExtra("User", user);
+                    intent.putExtra("User", currentUser);
                     view.getContext().startActivity(intent);
                 }
             });
@@ -178,6 +178,6 @@ public class AdaptadorObjeto extends RecyclerView.Adapter<AdaptadorObjeto.ImageV
     }
 
     public void setUser(Usuario usuario){
-        user = usuario;
+        currentUser = usuario;
     }
 }

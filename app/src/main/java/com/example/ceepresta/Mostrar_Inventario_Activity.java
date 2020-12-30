@@ -54,7 +54,8 @@ public class Mostrar_Inventario_Activity extends AppCompatActivity{
     private SearchView searchview;
 
     //UID del usuario que inicio sesión
-    private Usuario user;
+    private Usuario currentUser;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +67,7 @@ public class Mostrar_Inventario_Activity extends AppCompatActivity{
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));//Default: vertical
 
-        user = (Usuario) getIntent().getSerializableExtra("User");
+        currentUser = (Usuario) getIntent().getSerializableExtra("User");
 
         //Circulo de progreso antes de mostrar la lista
         circulo_progreso = findViewById(R.id.progress_circle);
@@ -75,7 +76,7 @@ public class Mostrar_Inventario_Activity extends AppCompatActivity{
         lista_de_objetos = new ArrayList<>();
 
         //Referencias de la base de datos y el storage
-        ref_db = FirebaseDatabase.getInstance().getReference().child("Inventarios").child("LCC");
+        ref_db = FirebaseDatabase.getInstance().getReference().child("Inventarios").child(currentUser.getInventarioid());
         fbstorage_ref_almac = FirebaseStorage.getInstance();
 
         db_listener = ref_db.addValueEventListener(new ValueEventListener() {
@@ -99,7 +100,7 @@ public class Mostrar_Inventario_Activity extends AppCompatActivity{
                 //Adapatador del Recyclerview, que mostrará la lista de objetos
                 adaptadorObjeto = new AdaptadorObjeto(lista_de_objetos);
                 recyclerView.setAdapter(adaptadorObjeto);
-                adaptadorObjeto.setUser(user);
+                adaptadorObjeto.setUser(currentUser);
 
                 /* Funciones de la barra de búsqueda*/
                 initSearchWidgets();

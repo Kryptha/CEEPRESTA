@@ -37,6 +37,7 @@ import static BaseDeDatos.Firebase.addDateInventario;
 import java.util.Calendar;
 
 import Clases.Objeto;
+import Clases.Usuario;
 
 /*
 Actividad para añadir un objeto
@@ -55,9 +56,6 @@ public class AñadirObjeto_Activity extends AppCompatActivity implements Adapter
     private ProgressBar progressBarUpload;
     private Button btnSave, btnVerinventario, btnUploadImage;
 
-    // Aplicado a LCC, pero prontó debería ser recibido desde el momento en que ingreso el usuario un dato
-    private String inventarioID = "LCC"; //TESTING
-
     // Variable para tomar la referencia del Storage (Aquí se guardaran las imágenes que se suban)
     private StorageReference storagefeRef;
     // Flag para averiguar que si se esta subiendo la imágen o no (Cuando hacen multiples click, sin esto se sube muchas veces)
@@ -66,6 +64,8 @@ public class AñadirObjeto_Activity extends AppCompatActivity implements Adapter
     // Obtener datos esenciales para guardar el objeto
     private String categoriaObjeto = "", estadoObjeto = "";
     private String fecha;
+
+    private Usuario currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +82,8 @@ public class AñadirObjeto_Activity extends AppCompatActivity implements Adapter
         btnUploadImage = findViewById(R.id.btn_choose_image);
         btnSave = findViewById(R.id.btn_save_añadirObjeto);
         btnVerinventario = findViewById(R.id.btn_verInventario);
+
+        currentUser = (Usuario) getIntent().getSerializableExtra("User");
 
         //Obtención de la fecha
         Calendar hoy = Calendar.getInstance();
@@ -214,7 +216,7 @@ public class AñadirObjeto_Activity extends AppCompatActivity implements Adapter
                                         "", "", "", "", "");
 
                                 //Se añade el objeto al inventarioID, si la base de datos falla manda un "false"
-                                if(addDateInventario(inventarioID, objeto)){
+                                if(addDateInventario(currentUser.getInventarioid(), objeto)){
                                     Toast.makeText(getApplicationContext(), "Objeto añadido", Toast.LENGTH_SHORT).show();
                                 }
                                 else {

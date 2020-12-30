@@ -23,6 +23,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import java.util.ArrayList;
 
 import Clases.Prestatario;
+import Clases.Usuario;
 
 public class MostrarPrestatarios_Activity extends AppCompatActivity
 {
@@ -51,6 +52,8 @@ public class MostrarPrestatarios_Activity extends AppCompatActivity
 
     private FloatingActionButton btn_add_prestatario;
 
+    private Usuario currentUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +63,8 @@ public class MostrarPrestatarios_Activity extends AppCompatActivity
         recyclerView = findViewById(R.id.recyclerView_prestatario);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));//Default: vertical
+
+        currentUser = (Usuario) getIntent().getSerializableExtra("User");
 
         //Circulo de progreso antes de mostrar la lista
         circulo_progreso = findViewById(R.id.progress_circle_prestatario);
@@ -71,7 +76,7 @@ public class MostrarPrestatarios_Activity extends AppCompatActivity
         lista_de_prestatarios = new ArrayList<>();
 
         //Referencias de la base de datos y el storage
-        ref_db = FirebaseDatabase.getInstance().getReference().child("Prestatarios").child("LCC");
+        ref_db = FirebaseDatabase.getInstance().getReference().child("Prestatarios").child(currentUser.getInventarioid());
         ref_almac = FirebaseStorage.getInstance();
 
         db_listener = ref_db.addValueEventListener(new ValueEventListener() {
