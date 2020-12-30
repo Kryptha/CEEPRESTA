@@ -61,8 +61,9 @@ public class PrestamoActivity extends AppCompatActivity {
     private String prestatarioID;
     //Obtención del objeto
     private Objeto objeto;
-    //Declaración del usuario prestamista
+
     private Usuario currentUser;
+    private String cantidadResta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +75,7 @@ public class PrestamoActivity extends AppCompatActivity {
         //Obtención de la UID del prestamista
         //Obtención del usuario actual
         currentUser = (Usuario) getIntent().getSerializableExtra("User");
+        Log.i("TAG", currentUser.getNombre());
 
 
         //Asignación de variables
@@ -91,7 +93,7 @@ public class PrestamoActivity extends AppCompatActivity {
 
         //Acá buscar en la base de datos y añadir a la lista.
         //Referencias de la base de datos y el storage
-        ref_db = FirebaseDatabase.getInstance().getReference().child("Prestatarios").child("LCC");
+        ref_db = FirebaseDatabase.getInstance().getReference().child("Prestatarios").child(currentUser.getInventarioid());
 
         db_listener = ref_db.addValueEventListener(new ValueEventListener() {
             @Override
@@ -212,6 +214,7 @@ public class PrestamoActivity extends AppCompatActivity {
     //Validacación de la entrada colocada por el usuario
     public boolean ValidarEntrada(){
         String cantidad = editxtCantidadPrestamo.getText().toString();
+        cantidadResta = String.valueOf(Integer.parseInt(objeto.getCantidad()) - Integer.parseInt(cantidad));
         boolean flag = true;
         if (fecha_entrega.getText().equals("")){
             fecha_entrega.setError("Debe elegir la fecha de entrega");
@@ -243,15 +246,19 @@ public class PrestamoActivity extends AppCompatActivity {
             Prestamo prestamo = new Prestamo(currentUser.getNombre() +" "+ currentUser.getApellido(), text_prestatario.getText().toString(),
                     objeto.getKey(), fecha_prestamo, fecha_plazo_entrega, "", "", cantidadReal);
             //Se añade el prestamo a la base de datos
-            addDataPrestamo(prestamo, "LCC");
+            addDataPrestamo(prestamo, currentUser.getInventarioid());
             //Se actualiza el objeto
-            objeto.setEstado("Reservado");
             objeto.setLastFechaPrestamo(fecha_prestamo);
             objeto.setLastPrestatario(text_prestatario.getText().toString());
             objeto.setLastPrestamista(currentUser.getNombre() + " " + currentUser.getApellido());
-            objeto.setCantidad(editxtCantidadPrestamo.getText().toString());
+            objeto.setCantidad(cantidadResta);
+            //En caso de que hayan aún objeto por prestar, el estad seguirá disponible. Si en caso de que esta reserva
+            //Genere 0 objetos, entonces se colocará el estado "Reservado"
+            if(objeto.getCantidad().equals("0")){
+                objeto.setEstado("Reservado");
+            }
             //Se actualiza la base de datos
-            SetDataInventario("LCC", objeto, objeto.getKey());
+            SetDataInventario(currentUser.getInventarioid(), objeto, objeto.getKey());
             Toast.makeText(getApplicationContext(), "Prestamo realizado", Toast.LENGTH_SHORT).show();
             finish();
         }

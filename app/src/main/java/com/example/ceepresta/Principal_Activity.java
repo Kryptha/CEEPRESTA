@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import Clases.Objeto;
 import Clases.Usuario;
+
 
 public class Principal_Activity extends AppCompatActivity {
 
@@ -34,6 +37,12 @@ public class Principal_Activity extends AppCompatActivity {
     //Autenticación para obtener la UID
     FirebaseAuth mAuth;
     DatabaseReference ref;
+    //Declaración de circulo de progreso
+    private ProgressBar circulo_progreso;
+    //Declaración de imagenes y textos para deshabilitarr según rango
+    private TextView txtAddUser, txtAddObject;
+    private ImageView imgAddUser, imgAddObject;
+
 
 
     @Override
@@ -43,7 +52,6 @@ public class Principal_Activity extends AppCompatActivity {
 
         //Obtención de la UID desde la autenticación
         UID = getIntent().getStringExtra("UID");
-        Log.i("UID", UID);
 
         //Declaración de la referencia
         ref = FirebaseDatabase.getInstance().getReference();
@@ -57,6 +65,13 @@ public class Principal_Activity extends AppCompatActivity {
         cvConfiguraciones = findViewById(R.id.cardview_settings);
         msgBienvenida = findViewById(R.id.txv_msg_bienvenida);
         msgRol = findViewById(R.id.txv_rol_bienvenida);
+        //Aspecto visual  de cardviews que se pueden o no desahbilitar
+        txtAddObject = findViewById(R.id.txtvAddObject);
+        txtAddUser = findViewById(R.id.txtvAddUser);
+        imgAddObject = findViewById(R.id.imgvwAddObject);
+        imgAddUser = findViewById(R.id.imgvwAddUser);
+        //Circulo de progreso antes de mostrar el mensaje de bienvenida
+        circulo_progreso = findViewById(R.id.progress_circle_home);
 
 
         //Obtención del usuario para actualizar los mensajes de bienvenida (Se debe colocar acá, ya que trabaja en hilos)
@@ -66,13 +81,17 @@ public class Principal_Activity extends AppCompatActivity {
 
                 if(dataSnapshot.exists()){
                     usuario = dataSnapshot.getValue(Usuario.class);
+                    usuario.setUid(UID);
                     setRolText(usuario);
                     setWelcomeText(usuario);
+                    setBotton(usuario);
+                    circulo_progreso.setVisibility(View.INVISIBLE);
                 }
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 System.out.println("Fallo la lectura: " + databaseError.getCode());
+                circulo_progreso.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -83,6 +102,8 @@ public class Principal_Activity extends AppCompatActivity {
         cvRegistrarUsuario.setOnClickListener(buttonclick);
         cvPrestamos.setOnClickListener(buttonclick);
 
+        //TESTING
+        //testBD();
 
     }
 
@@ -102,7 +123,7 @@ public class Principal_Activity extends AppCompatActivity {
                 openAgregarObjetoActivity();
             }
             else if (cvRegistrarUsuario.equals(view)){
-                openAñadirUsuarioActivity();
+                openUsuarioActivity();
             }
             else if (cvPrestamos.equals(view)){
                 openPrestamosActivity();
@@ -119,15 +140,17 @@ public class Principal_Activity extends AppCompatActivity {
 
     //Función de abrir la actividad de "añadir objetos"
     public void openAgregarObjetoActivity(){
-        Intent i = new Intent(this, AñadirObjeto_Activity.class);
-        startActivity(i);
+        Intent intent = new Intent(this, AñadirObjeto_Activity.class);
+        intent.putExtra("User", usuario);
+        startActivity(intent);
     }
 
     //Función de abrir la actividad "mostrar prestatarios"
     public void openMostrarPrestatariosActivity()
     {
-        Intent i = new Intent(this, MostrarPrestatarios_Activity.class);
-        startActivity(i);
+        Intent intent = new Intent(this, MostrarPrestatarios_Activity.class);
+        intent.putExtra("User", usuario);
+        startActivity(intent);
     }
 
 
@@ -140,9 +163,10 @@ public class Principal_Activity extends AppCompatActivity {
     }
 
     //Función de abrir la actibidad de "Mostrar inventarior"
-    public void openAñadirUsuarioActivity()
+    public void openUsuarioActivity()
     {
-        Intent intent = new Intent(this, AñadirUsuario_Activity.class);
+        Intent intent = new Intent(this, ListaDeUsuarios_Activity.class);
+        intent.putExtra("User", usuario);
         startActivity(intent);
     }
 
@@ -175,5 +199,26 @@ public class Principal_Activity extends AppCompatActivity {
 
     }
 
+    public void setBotton(Usuario usuario){
+        if(usuario.getRol().equals("cee")){
+            //Desahbilitir el botón de "registrar usuario"
+            cvRegistrarUsuario.setEnabled(false);
+            imgAddUser.setImageResource(R.drawable.adduserenable);
+            txtAddUser.setText("Sin autorización");
+
+        }
+        if(usuario.getRol().equals("delegado")){
+            //Desahbilitir el botón de "registrar usuario"
+            cvRegistrarUsuario.setEnabled(false);
+            imgAddUser.setImageResource(R.drawable.adduserenable);
+            txtAddUser.setText("Sin autorización");
+            //Desabilitar botón de "registrar objeto"
+            cvRegistrarObjeto.setEnabled(false);
+            imgAddObject.setImageResource(R.drawable.registerobjetoenable);
+            txtAddObject.setText("Sin autorización");
+
+
+        }
+    }
 
 }

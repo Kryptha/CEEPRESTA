@@ -21,30 +21,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        
-        <Button
-            android:id="@+id/categoria_filtado"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_margin="10dp"
-            android:layout_height="match_parent"
-            android:text="Categoría"
-            android:textColor="@color/black"
-            android:textSize="12dp"
-            android:backgroundTint="@color/white">
-        </Button>
-        <Button
-            android:id="@+id/estado_filtrado"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_margin="10dp"
-            android:layout_height="match_parent"
-            android:text="Estado"
-            android:textSize="12dp"
-            android:textColor="@color/black"
-            android:backgroundTint="@color/white">
-        </Button>
-
 
     </LinearLayout>
 

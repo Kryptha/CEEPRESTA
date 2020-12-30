@@ -33,13 +33,18 @@ import Clases.Usuario;
 
 public class DetallesObjeto_Activity extends AppCompatActivity
 {
+    //Declaración de variable visuales
     private TextView nombreDetalle, estadoDetalle, fechaRegDetalle;
     private TextView lastPrestatario, lastPrestamista, lastReceptor, lastFechaPrestamo, lastFechaDevolución;
     private ImageView imgObjetoDetalle;
+    private Button btnPrestar;
+    //Declaración de base de datos y storage
     private FirebaseStorage fbstorage_ref_almac;
     private DatabaseReference ref_db;
+    //Declaración de objeto y usuario
     private Objeto objeto_recibido, objetoShow;
     private Usuario currentUser;
+    //Declaración de diálogo
     Dialog dialog;
 
     //Para obtener una referencia a las imagenes en Firebase Storage
@@ -60,6 +65,7 @@ public class DetallesObjeto_Activity extends AppCompatActivity
         estadoDetalle = findViewById(R.id.tv_estado_detalle);
         fechaRegDetalle = findViewById(R.id.tv_fechaReg_detalle);
         imgObjetoDetalle = findViewById(R.id.iv_imgObjeto_detalle);
+        btnPrestar = findViewById(R.id.btn_prestar_objeto);
 
         //Declaración de datos de último prestamo y devolución
         lastFechaDevolución = findViewById(R.id.tv_ultvez_dev);
@@ -72,7 +78,7 @@ public class DetallesObjeto_Activity extends AppCompatActivity
         currentUser = (Usuario) getIntent().getSerializableExtra("User");
 
         //Referencias de la base de datos y el storage
-        ref_db = FirebaseDatabase.getInstance().getReference().child("Inventarios").child("LCC").child(objeto_recibido.getKey());
+        ref_db = FirebaseDatabase.getInstance().getReference().child("Inventarios").child(currentUser.getInventarioid()).child(objeto_recibido.getKey());
         fbstorage_ref_almac = FirebaseStorage.getInstance();
 
         //Obtención del objeto desde la base de datos
@@ -103,6 +109,12 @@ public class DetallesObjeto_Activity extends AppCompatActivity
                     String ultiReceptor = objeto.getLastReceptor().equals("") ? "Sin Receptor" : objeto.getLastReceptor();
                     lastReceptor.setText("Último receptor: " + ultiReceptor);
 
+                    //En caso de que no hayan objetos suficiente para prestar o el estado sea No disponible para prestar
+                    //Entonces se inhabilita el botón
+                    if(objeto.getCantidad().equals("0") || objeto.getEstado().equals("No Disponible")){
+                        btnPrestar.setEnabled(false);
+                    }
+
             }
 
             @Override
@@ -114,7 +126,25 @@ public class DetallesObjeto_Activity extends AppCompatActivity
             }
         });
 
+        //Se verifica si el usuario es delegado o no, para deshabilitar la edicion de objeto o no.
+        if(currentUser.getRol().equals("Delegado"))
+        {
+            Button edit_obj;
+            edit_obj = findViewById(R.id.btn_editar_detalle);
+            edit_obj.setEnabled(false);
+        }
 
+
+
+    }
+
+    public void onEditClick(View view)
+    {
+
+        Intent i = new Intent(this, EditarObjeto_Activity.class);
+        i.putExtra("ObjetoSeleccionado", objeto_recibido);
+        i.putExtra("User", currentUser);
+        startActivity(i);
 
     }
 

@@ -32,7 +32,6 @@
                 android:id="@+id/txv_msg_bienvenida"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Bienvenido"
                 android:textColor="#FFFFFF"
                 android:textSize="24dp"
                 android:textStyle="bold" />
@@ -42,9 +41,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/txv_msg_bienvenida"
-                android:text="Centro de estudiantes"
                 android:textColor="#FFFFFF"
                 android:textSize="18dp" />
+
+            <ProgressBar
+                android:id="@+id/progress_circle_home"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"/>
+
         </RelativeLayout>
 
         <GridLayout
@@ -177,10 +182,12 @@
                     android:layout_height="match_parent">
 
                     <ImageView
+                        android:id="@+id/imgvwAddObject"
                         android:src="@drawable/registerobjeto"
                         android:layout_width="80dp"
                         android:layout_height="80dp"/>
                     <TextView
+                        android:id="@+id/txtvAddObject"
                         android:layout_marginTop="12dp"
                         android:textColor="@color/black"
                         android:textSize="18sp"
@@ -200,6 +207,7 @@
                 android:backgroundTint="@color/white"
                 android:layout_columnWeight="1"
                 android:layout_rowWeight="1"
+
                 app:cardElevation="6dp"
                 app:cardCornerRadius="12dp"
                 android:layout_margin="12dp">
@@ -212,14 +220,16 @@
                     android:layout_height="match_parent">
 
                     <ImageView
+                        android:id="@+id/imgvwAddUser"
                         android:src="@drawable/adduserr"
                         android:layout_width="80dp"
                         android:layout_height="80dp"/>
                     <TextView
+                        android:id="@+id/txtvAddUser"
                         android:layout_marginTop="12dp"
                         android:textColor="@color/black"
                         android:textSize="18sp"
-                        android:text="Añadir usuario"
+                        android:text="Usuarios"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         />

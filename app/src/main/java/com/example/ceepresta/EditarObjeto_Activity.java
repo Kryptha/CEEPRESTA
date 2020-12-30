@@ -34,16 +34,16 @@ import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 import static BaseDeDatos.Firebase.addDateInventario;
+import static BaseDeDatos.Firebase.SetDataInventario;
 import java.util.Calendar;
 
 import Clases.Objeto;
-import Clases.Usuario;
 
 /*
 Actividad para añadir un objeto
  */
 
-public class AñadirObjeto_Activity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class EditarObjeto_Activity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     /* Declaración de variable "flag" para la elegir la imagen en galeria */
     public static final int PICK_IMAGE_REQUEST = 1;
@@ -56,6 +56,12 @@ public class AñadirObjeto_Activity extends AppCompatActivity implements Adapter
     private ProgressBar progressBarUpload;
     private Button btnSave, btnVerinventario, btnUploadImage;
 
+    // Aplicado a LCC, pero prontó debería ser recibido desde el momento en que ingreso el usuario un dato
+    private String inventarioID = "LCC"; //TESTING
+
+    //Auxiliar para comparar cmabios en la imagen del objeto
+    private String auxImg;
+
     // Variable para tomar la referencia del Storage (Aquí se guardaran las imágenes que se suban)
     private StorageReference storagefeRef;
     // Flag para averiguar que si se esta subiendo la imágen o no (Cuando hacen multiples click, sin esto se sube muchas veces)
@@ -65,13 +71,13 @@ public class AñadirObjeto_Activity extends AppCompatActivity implements Adapter
     private String categoriaObjeto = "", estadoObjeto = "";
     private String fecha;
 
-    private Usuario currentUser;
+    //Obtención del objeto a editar
+    private Objeto objeto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_objeto);
-
+        setContentView(R.layout.activity_editar_objeto_);
         //Obtención de variables de lo visual
         nameObjeto = findViewById(R.id.editxt_name_object);
         cantidadObjeto = findViewById(R.id.editxt_cant_object);
@@ -80,10 +86,11 @@ public class AñadirObjeto_Activity extends AppCompatActivity implements Adapter
         imageViewObjeto = findViewById(R.id.imgvw_image_object);
         progressBarUpload = findViewById(R.id.progressbar_image);
         btnUploadImage = findViewById(R.id.btn_choose_image);
-        btnSave = findViewById(R.id.btn_save_añadirObjeto);
+        btnSave = findViewById(R.id.btn_save_editarObjeto);
         btnVerinventario = findViewById(R.id.btn_verInventario);
 
-        currentUser = (Usuario) getIntent().getSerializableExtra("User");
+        //Recibo el objeto seleccionado
+        objeto = (Objeto) getIntent().getSerializableExtra("ObjetoSeleccionado");
 
         //Obtención de la fecha
         Calendar hoy = Calendar.getInstance();
@@ -91,6 +98,17 @@ public class AñadirObjeto_Activity extends AppCompatActivity implements Adapter
 
         //Declaración del storage de imagenes
         storagefeRef = FirebaseStorage.getInstance().getReference("imagenObjetos");
+
+        //Se establece los valores correspondientes del objeto a editar
+        nameObjeto.setText(objeto.getNombre());
+        cantidadObjeto.setText(objeto.getCantidad());
+
+        //Se establece y se despliega la imagen correspondiente al objeto
+        imageUrlObjeto = Uri.parse(objeto.getUrlimage());
+        Picasso.get().load(imageUrlObjeto).into(imageViewObjeto);
+
+        //Se usa el auxiliar para comparar el cambio de imagen
+        auxImg = imageUrlObjeto.toString();
 
         //En caso de que aprete el botón para subir imagen (o elegir imágen)
         btnUploadImage.setOnClickListener(new View.OnClickListener() {
@@ -107,12 +125,19 @@ public class AñadirObjeto_Activity extends AppCompatActivity implements Adapter
             public void onClick(View view) {
                 //En caso de que haga multiples click.
                 if (uploadTask != null && uploadTask.isInProgress()){
-                    Toast.makeText(AñadirObjeto_Activity.this, "Se esta subiendo el objeto", Toast.LENGTH_LONG).show();
+                    Toast.makeText(EditarObjeto_Activity.this, "Se esta subiendo el objeto", Toast.LENGTH_LONG).show();
                 }
                 else {
                     //Validación de entrada y subida de objeto
                     if(validarEntrada()){
-                        uploadObject();
+                        if(auxImg.equals(imageUrlObjeto.toString()))
+                        {
+                            updateObjectWithoutImg();
+                        }
+                        else
+                        {
+                            updateObject();
+                        }
                     }
                 }
             }
@@ -130,12 +155,14 @@ public class AñadirObjeto_Activity extends AppCompatActivity implements Adapter
         adapterSpinnerCategory.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCategoria.setAdapter(adapterSpinnerCategory);
         spinnerCategoria.setOnItemSelectedListener(this);
+        spinnerCategoria.setSelection(((ArrayAdapter)spinnerCategoria.getAdapter()).getPosition(objeto.getCategoria()));
 
-        //Adapatador para utilizar el spinner de Estados esta predeterminado en values -> string.xml -> estadosRegister
-        ArrayAdapter<CharSequence> adapterSpinnerState = ArrayAdapter. createFromResource(this, R.array.estadosRegister, android.R.layout.simple_spinner_item);
+        //Adapatador para utilizar el spinner de Estados esta predeterminado en values -> string.xml -> estadosEditar
+        ArrayAdapter<CharSequence> adapterSpinnerState = ArrayAdapter. createFromResource(this, R.array.estadosEditar, android.R.layout.simple_spinner_item);
         adapterSpinnerCategory.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerEstado.setAdapter(adapterSpinnerState);
         spinnerEstado.setOnItemSelectedListener(this);
+        spinnerEstado.setSelection(((ArrayAdapter)spinnerEstado.getAdapter()).getPosition(objeto.getEstado()));
 
 
 
@@ -183,8 +210,29 @@ public class AñadirObjeto_Activity extends AppCompatActivity implements Adapter
         return mime.getExtensionFromMimeType(cr.getType(uri));
     }
 
+    private void updateObjectWithoutImg(){
+        if (!categoriaObjeto.equals("") && !estadoObjeto.equals("")){
+            //Se crea el objeto con los datos necesarios
+            Objeto objetoUpdated = new Objeto(nameObjeto.getText().toString().trim(), estadoObjeto , objeto.getFechaRegistro()
+                    , imageUrlObjeto.toString(), cantidadObjeto.getText().toString().trim(), categoriaObjeto,
+                    objeto.getLastPrestatario(), objeto.getLastPrestamista(), objeto.getLastFechaDevolución(), objeto.getLastFechaPrestamo(), objeto.getLastReceptor());
+
+            //Se añade el objeto al inventarioID, si la base de datos falla manda un "false"
+            if(SetDataInventario(inventarioID, objetoUpdated, objeto.getKey())){
+                Toast.makeText(getApplicationContext(), "Objeto Editado", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                Toast.makeText(getApplicationContext(), "Existe un error en la base de datos", Toast.LENGTH_SHORT).show();
+            }
+        }
+        else {
+            Toast.makeText(getApplicationContext(), "Debe seleccionar una opción válida", Toast.LENGTH_LONG).show();
+        }
+
+    }
+
     // Función que sube la imagen a la BD y Storage de Firebase
-    private void uploadObject(){
+    private void updateObject(){
         //El URLimage no debe ser nulo (Debe elegir una imágen)
         if(imageUrlObjeto != null){
             //Se obtiene una ID de milisegundos parra guardarla con la extensión (ej: 1234663.png)
@@ -207,17 +255,16 @@ public class AñadirObjeto_Activity extends AppCompatActivity implements Adapter
                             Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
                             while (!urlTask.isSuccessful());
                             Uri downloadUrl = urlTask.getResult();
-
                             //Mientrás seleccione una categoria
                             if (!categoriaObjeto.equals("") && !estadoObjeto.equals("")){
                                 //Se crea el objeto con los datos necesarios
-                                Objeto objeto = new Objeto(nameObjeto.getText().toString().trim(), estadoObjeto , fecha
+                                Objeto objetoUpdated = new Objeto(nameObjeto.getText().toString().trim(), estadoObjeto , objeto.getFechaRegistro()
                                         , downloadUrl.toString(), cantidadObjeto.getText().toString().trim(), categoriaObjeto,
-                                        "", "", "", "", "");
+                                        objeto.getLastPrestatario(), objeto.getLastPrestamista(), objeto.getLastFechaDevolución(), objeto.getLastFechaPrestamo(), objeto.getLastReceptor());
 
                                 //Se añade el objeto al inventarioID, si la base de datos falla manda un "false"
-                                if(addDateInventario(currentUser.getInventarioid(), objeto)){
-                                    Toast.makeText(getApplicationContext(), "Objeto añadido", Toast.LENGTH_SHORT).show();
+                                if(SetDataInventario(inventarioID, objetoUpdated, objeto.getKey())){
+                                    Toast.makeText(getApplicationContext(), "Objeto Editado", Toast.LENGTH_SHORT).show();
                                 }
                                 else {
                                     Toast.makeText(getApplicationContext(), "Existe un error en la base de datos", Toast.LENGTH_SHORT).show();
@@ -233,7 +280,7 @@ public class AñadirObjeto_Activity extends AppCompatActivity implements Adapter
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             //En caso de fallo en el Storage, avisa en pantalla.
-                            Toast.makeText(AñadirObjeto_Activity.this, e.getMessage(), Toast.LENGTH_LONG). show();
+                            Toast.makeText(EditarObjeto_Activity.this, e.getMessage(), Toast.LENGTH_LONG). show();
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -255,9 +302,9 @@ public class AñadirObjeto_Activity extends AppCompatActivity implements Adapter
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-            //De acá se obtienen los datos del spinner
-            categoriaObjeto = spinnerCategoria.getSelectedItem().toString();
-            estadoObjeto = spinnerEstado.getSelectedItem().toString();
+        //De acá se obtienen los datos del spinner
+        categoriaObjeto = spinnerCategoria.getSelectedItem().toString();
+        estadoObjeto = spinnerEstado.getSelectedItem().toString();
     }
 
     @Override
