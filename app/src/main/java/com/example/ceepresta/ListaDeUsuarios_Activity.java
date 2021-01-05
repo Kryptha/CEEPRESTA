@@ -118,6 +118,12 @@ public class ListaDeUsuarios_Activity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
+    }
+
     private void initSearchWidgets() {
         //Se busca la id de la barra de búsqueda.
         searchview = (SearchView) findViewById(R.id.id_searchview_usuario);

@@ -138,6 +138,7 @@ public class DetallesObjeto_Activity extends AppCompatActivity
 
     }
 
+
     public void onEditClick(View view)
     {
 

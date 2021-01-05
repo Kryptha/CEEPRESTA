@@ -269,7 +269,7 @@ public class AñadirObjeto_Activity extends AppCompatActivity implements Adapter
     //Función de abrir la actibidad de "Mostrar inventarior"
     public void openMostrarInventarioActivity()
     {
-        Intent intent = new Intent(this, Mostrar_Inventario_Activity.class);
-        startActivity(intent);
+        finish();
     }
+
 }

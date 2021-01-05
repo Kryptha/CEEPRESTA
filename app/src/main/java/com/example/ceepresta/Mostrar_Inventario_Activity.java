@@ -122,6 +122,7 @@ public class Mostrar_Inventario_Activity extends AppCompatActivity{
 
     }
 
+
     private void initSearchWidgets()
     {
         //Se busca la id de la barra de búsqueda.

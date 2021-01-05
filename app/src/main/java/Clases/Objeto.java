@@ -28,6 +28,7 @@ public class Objeto implements Serializable
         //Constructor vacío es necesario.
     }
 
+
     public String getLastPrestatario() {
         return lastPrestatario;
     }

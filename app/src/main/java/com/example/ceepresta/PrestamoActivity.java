@@ -240,11 +240,10 @@ public class PrestamoActivity extends AppCompatActivity {
     public void ConfirmarPrestamoClick(View view) {
         if (ValidarEntrada()){
             String cantidadIngresada = editxtCantidadPrestamo.getText().toString();
-            String cantidadReal = String.valueOf(Integer.parseInt(objeto.getCantidad()) - Integer.parseInt(cantidadIngresada));
 
             //En este caso aún no se ha devuelto el objeto por ende no se puede colocar fecha de devolución, ni el receptor
             Prestamo prestamo = new Prestamo(currentUser.getNombre() +" "+ currentUser.getApellido(), text_prestatario.getText().toString(),
-                    objeto.getKey(), fecha_prestamo, fecha_plazo_entrega, "", "", cantidadReal);
+                    objeto.getKey(), fecha_prestamo, fecha_plazo_entrega, "", "", cantidadIngresada);
             //Se añade el prestamo a la base de datos
             addDataPrestamo(prestamo, currentUser.getInventarioid());
             //Se actualiza el objeto
