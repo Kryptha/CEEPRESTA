@@ -46,6 +46,7 @@ public class ListaDeUsuarios_Activity extends AppCompatActivity {
 
     //Obtención del searchview
     private SearchView searchview;
+    private Usuario currentUser;
 
     private FloatingActionButton btn_add_Usuario;
 
@@ -65,6 +66,7 @@ public class ListaDeUsuarios_Activity extends AppCompatActivity {
         //Botón flotante para agregar usuarios
         btn_add_Usuario = findViewById(R.id.floatingActionButton_usuario);
 
+        currentUser = (Usuario) getIntent().getSerializableExtra("User");
         //Lista con los usuarios a mostrar
         lista_de_usuarios = new ArrayList<>();
 
@@ -153,6 +155,7 @@ public class ListaDeUsuarios_Activity extends AppCompatActivity {
     public void openAñadirUsuarioActivity()
     {
         Intent i = new Intent(this, AñadirUsuario_Activity.class);
+        i.putExtra("User", currentUser);
         startActivity(i);
     }
 }

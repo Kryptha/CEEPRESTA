@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -40,7 +41,7 @@ public class DetallesObjeto_Activity extends AppCompatActivity
     private Button btnPrestar;
     //Declaración de base de datos y storage
     private FirebaseStorage fbstorage_ref_almac;
-    private DatabaseReference ref_db;
+    private DatabaseReference ref_db, ref_db_delete;
     //Declaración de objeto y usuario
     private Objeto objeto_recibido, objetoShow;
     private Usuario currentUser;
@@ -79,6 +80,7 @@ public class DetallesObjeto_Activity extends AppCompatActivity
 
         //Referencias de la base de datos y el storage
         ref_db = FirebaseDatabase.getInstance().getReference().child("Inventarios").child(currentUser.getInventarioid()).child(objeto_recibido.getKey());
+        ref_db_delete = FirebaseDatabase.getInstance().getReference().child("Inventarios").child(currentUser.getInventarioid());
         fbstorage_ref_almac = FirebaseStorage.getInstance();
 
         //Obtención del objeto desde la base de datos
@@ -168,22 +170,27 @@ public class DetallesObjeto_Activity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                String llave_seleccionada = objeto_recibido.getKey();
                 StorageReference ref_imagen = fbstorage_ref_almac.getReferenceFromUrl(objeto_recibido.getUrlimage());
-
                 /*Solo se quiere borrar la imagen de la base de datos SI el borrado fue exitoso en el
                  * almacenamiento, o sino se pueden tener entradas en el almacenamiento que no tienen
                  * la entrada correspondiente en la base de datos, cuando el borrado en la base de datos
                  * fue exitoso pero no asi en el almacenamiento.*/
+
                 ref_imagen.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid)
                     {
-                        ref_db.child(llave_seleccionada).removeValue();
+                        ref_db_delete.child(objeto_recibido.getKey()).removeValue();
                         Toast.makeText(DetallesObjeto_Activity.this, objetoShow.getNombre() + "eliminado", Toast.LENGTH_SHORT).show();
-                        finish();
+                        dialog.dismiss();
+                        Intent intent = new Intent(getApplicationContext(), Mostrar_Inventario_Activity.class);
+                        intent.putExtra("User", currentUser);
+                        startActivity(intent);
+
                     }
-                });//Se puede agregar un OnFailureListener si se desea realizar un feedback cuando el borrado falla
+                });
+                //DetallesObjeto_Activity.this.finish();
+                //Se puede agregar un OnFailureListener si se desea realizar un feedback cuando el borrado falla
             }
         });
         btn_cancelar.setOnClickListener(new View.OnClickListener() {

@@ -157,6 +157,7 @@ public class MostrarPrestatarios_Activity extends AppCompatActivity
     public void openAñadirPrestatarioActivity()
     {
         Intent i = new Intent(this, AñadirPrestatario_Activity.class);
+        i.putExtra("User", currentUser);
         startActivity(i);
     }
 }
